@@ -33,7 +33,7 @@ const DEFAULT_OPTIONS = {
     '_data/**',
     '_drafts/*.md',
     'templates/**',
-    'lib/**',
+    'lib/**'
   ],
   markdown: {
     gfm: true,
@@ -75,7 +75,7 @@ export default function (config = {}, callback) {
   // Metalsmith options
   // --------------------------------------------------------------------------
   m.clean(true);
-  m.source(options.basePath + (options.sourceDir ? options.sourceDir : '/src'));
+  m.source(`${path.join(options.basePath, (options.sourceDir ? options.sourceDir : 'src'))}`);
   m.destination('dist');
 
   // File Metadata
@@ -91,6 +91,10 @@ export default function (config = {}, callback) {
   // Ignores
   // --------------------------------------------------------------------------
   m.use(ignore(options.ignore));
+
+  if (options.production) {
+    m.use(drafts());
+  }
 
   // Definitions
   // --------------------------------------------------------------------------

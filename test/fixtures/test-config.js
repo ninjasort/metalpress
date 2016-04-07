@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'path';
 import fs from 'fs';
 // import webpack from 'webpack'
 // import webpackConfig from '../webpack.config.babel';
@@ -7,7 +7,11 @@ import fs from 'fs';
 
 export default {
 
-  basePath: process.cwd() + '/test/fixtures',
+  basePath: `${process.cwd()}/test/fixtures`,
+
+  metadata: {
+    site: '_data/config.yaml'
+  },
 
   firebase: {
     url: 'https://axisdefined.firebaseio.com'

@@ -13,6 +13,7 @@ module.exports = {
     "eol-last": 0,
     "no-multi-spaces": 0,
     "no-trailing-spaces": 0,
-    "padded-blocks": 0
+    "padded-blocks": 0,
+    "comma-dangle": 0
   }
 };
