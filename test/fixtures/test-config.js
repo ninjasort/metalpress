@@ -26,16 +26,13 @@ export default {
 
   permalinks: {
     relative: false,
-    linksets: [
-      {
-	match: { collection: 'pages' },
-	pattern: ':title'
-      },
-      {
-	match: { collection: 'posts' },
-	pattern: ':date/:title'
-      }
-    ]
+    linksets: [{
+      match: { collection: 'pages' },
+      pattern: ':title'
+    }, {
+      match: { collection: 'posts' },
+      pattern: ':date/:title'
+    }]
   },
 
   pagination: false,
