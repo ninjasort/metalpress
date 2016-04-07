@@ -23,6 +23,7 @@ import imagemin         from 'metalsmith-imagemin';
 import sitemap          from 'metalsmith-sitemap';
 import firebase         from 'metalsmith-firebase';
 import rss              from 'metalsmith-rss';
+import drafts           from 'metalsmith-drafts';
 
 const DEFAULT_OPTIONS = {
   title: 'MetalPress',
@@ -75,7 +76,6 @@ export default function (config = {}, callback) {
   // Metalsmith options
   // --------------------------------------------------------------------------
   m.clean(true);
-  m.source(`${path.join(options.basePath, (options.sourceDir ? options.sourceDir : 'src'))}`);
   m.destination('dist');
 
   // File Metadata
