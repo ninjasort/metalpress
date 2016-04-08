@@ -16,6 +16,10 @@ import jekyllDates      from 'metalsmith-jekyll-dates';
 import autoprefixer     from 'metalsmith-autoprefixer';
 import webpack          from 'metalsmith-webpack';
 import ignore           from 'metalsmith-ignore';
+// TODO: ->
+import snippet          from 'metalsmith-snippet';
+import blc              from 'metalsmith-broken-link-checker';
+import buildDate        from 'metalsmith-build-date';
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
 import fingerprint      from 'metalsmith-fingerprint';
@@ -34,11 +38,19 @@ const DEFAULT_OPTIONS = {
     '_data/**',
     '_drafts/*.md',
     'templates/**',
-    'lib/**'
+    'lib/**',
+    'lib/**/.gitignore',
+    'lib/**/.bower.json',
+    'lib/**/.jshintrc',
+    'assets/js/**/!(.min).js'
   ],
   markdown: {
     gfm: true,
     tables: true
+  },
+  permalinks: {
+    relative: false,
+    pattern: ':title'
   },
   layouts: {
     engine: 'liquid',
@@ -145,9 +157,9 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   if (options.webpack) {
     if (options.production) {
-      m.use(webpack(options.webpackProd));
+      m.use(webpack(options.webpack.prod));
     } else {
-      m.use(webpack(options.webpack));
+      m.use(webpack(options.webpack.dev));
     }
   }
 

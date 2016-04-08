@@ -40,15 +40,6 @@ export default {
   },
 
   pagination: false,
-  // pagination: {
-  //   'collections.posts': {
-  //     perPage: 5,
-  //     first: 'blog/index.html',
-  //     path: 'blog/:num/index.html',
-  //     noPageOne: true,
-  //     layout: 'blog.liquid'
-  //   }
-  // },
 
   rss: {
     feedOptions: {
