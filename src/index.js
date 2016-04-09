@@ -16,6 +16,7 @@ import jekyllDates      from 'metalsmith-jekyll-dates';
 import autoprefixer     from 'metalsmith-autoprefixer';
 import webpack          from 'metalsmith-webpack';
 import ignore           from 'metalsmith-ignore';
+import metallic         from 'metalsmith-metallic';
 // TODO: ->
 import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
@@ -120,6 +121,10 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   m.use(jekyllDates());
 
+  // Code Highlighting
+  // --------------------------------------------------------------------------
+  m.use(metallic());
+  
   // Markdown
   // --------------------------------------------------------------------------
   m.use(markdown(options.markdown));
