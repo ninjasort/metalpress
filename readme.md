@@ -1,15 +1,15 @@
-# metalpress
-
-> Create a blog easily with Metalsmith.
+# metalpress 
 
 **UNDER DEVELOPMENT - (ALPHA)**
+
+> Create a blog easily with Metalsmith.
 
 An opinionated boilerplate for quickly creating a blog with [Metalsmith](https://github.com/metalsmith/metalsmith).
 
 ## Features
 
 - Liquid Templating
-- Markdown Support
+- Markdown Rendering
 - Permalinks
 - Pagination
 - Firebase Data Integration
@@ -142,5 +142,59 @@ module.exports = {
       manifestFiles: 'bower.json'
     })
   ]
+}
+```
+
+## Default Options
+
+All options can be overridden with their respective plugin options.
+
+```
+{
+  title: 'MetalPress',
+  description: 'Website to MetalPress',
+  url: 'https://metalpress.io',
+  sitemapPath: 'sitemap.xml',
+  ignore: [
+    '_data/**',
+    '_drafts/*.md',
+    'templates/**',
+    'lib/**',
+    'lib/**/.gitignore',
+    'lib/**/.bower.json',
+    'lib/**/.jshintrc',
+    'assets/js/**/!(.min).js'
+  ],
+  markdown: {
+    gfm: true,
+    tables: true
+  },
+  permalinks: {
+    relative: false,
+    pattern: ':title'
+  },
+  layouts: {
+    engine: 'liquid',
+    directory: 'templates/_layouts',
+    includeDir: 'templates/_includes'
+  },
+  inPlace: {
+    engine: 'liquid',
+    pattern: '**/*.liquid',
+    includeDir: 'templates/_includes'
+  },
+  sass: {
+    outputDir: 'assets/css',
+    sourceMap: true,
+    sourceMapEmbed: true
+  },
+  imagemin: {
+    optimizationLevel: 4,
+    progressive: true
+  },
+  htmlMinifier: {
+    removeComments: false,
+    removeEmptyAttributes: false
+  }
 }
 ```
