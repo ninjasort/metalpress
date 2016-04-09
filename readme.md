@@ -149,7 +149,7 @@ module.exports = {
 
 All options can be overridden with their respective plugin options.
 
-```json
+```js
 {
   title: 'MetalPress',
   description: 'Website to MetalPress',
