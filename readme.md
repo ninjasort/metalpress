@@ -1,8 +1,8 @@
 # metalpress 
 
-**UNDER DEVELOPMENT - (ALPHA)**
-
 > Create a blog easily with Metalsmith.
+
+**UNDER DEVELOPMENT - (ALPHA)**
 
 An opinionated boilerplate for quickly creating a blog with [Metalsmith](https://github.com/metalsmith/metalsmith).
 
