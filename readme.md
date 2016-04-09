@@ -120,6 +120,8 @@ gulp.task('metalpress', () => {
 });
 ```
 
+The project will be built to a `dist` directory.
+
 Next, if you want ES6/Bower support 
 
 - `$ npm install babel-loader bower-webpack-plugin --save-dev`
