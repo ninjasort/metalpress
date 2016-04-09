@@ -214,3 +214,25 @@ All options can be overridden with their respective plugin options.
   }
 }
 ```
+
+## Production Builds
+
+For production, simply overwrite the config with `production: true`.
+
+```js
+import metalpress from 'metalpress';
+import config from './metalpress.config.js';
+
+gulp.task('metalpress:prod', () => {
+  const config = {...config, production: true};
+  const options = metalpress(config, (err, files) => {
+    if (err) throw new Error(err);
+    console.log('Metalpress (production) site completed.');
+  });
+});
+
+```
+
+
+
+
