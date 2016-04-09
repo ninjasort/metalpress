@@ -106,6 +106,20 @@ Next, create a directory structure including the following:
 └── webpack.config.babel.js
 ```
 
+To use metalpress, simply run it with the configuration in your gulpfile:
+
+```js
+import metalpress from 'metalpress';
+import config from './metalpress.config.js';
+
+gulp.task('metalpress', () => {
+  const options = metalpress(config, (err, files) => {
+    if (err) throw new Error(err);
+    console.log('Metalpress site completed.');
+  });
+});
+```
+
 Next, if you want ES6/Bower support 
 
 - `$ npm install babel-loader bower-webpack-plugin --save-dev`
