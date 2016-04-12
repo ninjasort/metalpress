@@ -7,8 +7,6 @@ import fs from 'fs';
 
 const plugin = (options) => {
   return (files, metalsmith, next) => {
-    console.log('middleware options', options);
-    console.log(typeof metalsmith);
     next();
   }
 };

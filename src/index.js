@@ -191,7 +191,7 @@ export default function (config = {}, callback) {
   }
 
   if (options.middleware) {
-    for(let plugin of options.middleware) {
+    for (const plugin of options.middleware) {
       m.use(plugin);
     }
   }
