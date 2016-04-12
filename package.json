@@ -2,7 +2,7 @@
   "name": "metalpress",
   "description": "Create a blog easily with Metalsmith.",
   "repository": "git://github.com/.git",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "main": "lib/index.js",
   "babel": {
