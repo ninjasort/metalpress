@@ -5,11 +5,11 @@ import fs from 'fs';
 // import webpackProdConfig from '../webpack.config.prod.babel'
 // import customTags from './customtags';
 
-const plugin = (options) => {
+function plugin(options) {
   return (files, metalsmith, next) => {
     next();
-  }
-};
+  };
+}
 
 export default {
 
@@ -63,6 +63,6 @@ export default {
   // webpackProd: webpackProdConfig,
 
   middleware: [
-    plugin({testing: 'testing middleware'})
+    plugin({ testing: 'testing middleware' })
   ]
 };
