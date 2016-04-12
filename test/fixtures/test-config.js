@@ -5,6 +5,14 @@ import fs from 'fs';
 // import webpackProdConfig from '../webpack.config.prod.babel'
 // import customTags from './customtags';
 
+const plugin = (options) => {
+  return (files, metalsmith, next) => {
+    console.log('middleware options', options);
+    console.log(typeof metalsmith);
+    next();
+  }
+};
+
 export default {
 
   basePath: `${process.cwd()}/test/fixtures`,
@@ -56,4 +64,7 @@ export default {
   // webpack: webpackConfig,
   // webpackProd: webpackProdConfig,
 
+  middleware: [
+    plugin({testing: 'testing middleware'})
+  ]
 };
