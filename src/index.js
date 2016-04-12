@@ -75,7 +75,8 @@ const DEFAULT_OPTIONS = {
   htmlMinifier: {
     removeComments: false,
     removeEmptyAttributes: false
-  }
+  },
+  middleware: false
 };
 
 export default function (config = {}, callback) {
@@ -187,6 +188,12 @@ export default function (config = {}, callback) {
   if (options.production) {
     m.use(imagemin(options.imagemin));
     m.use(htmlMinifier('*.html', options.htmlMinifier));
+  }
+
+  if (options.middleware) {
+    for(let plugin in options.middleware) {
+      m.use(plugin);
+    }
   }
 
   // Build
