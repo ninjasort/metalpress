@@ -202,7 +202,9 @@ export default function (config = {}, callback) {
 
   if (options.middleware) {
     for (const plugin in options.middleware) {
-      m.use(options.middleware[plugin]);
+      if (options.middleware[plugin]) {
+        m.use(options.middleware[plugin]);
+      }
     }
   }
 
