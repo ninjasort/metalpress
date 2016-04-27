@@ -34,7 +34,16 @@ const DEFAULT_OPTIONS = {
   title: 'MetalPress',
   description: 'Website to MetalPress',
   url: 'https://metalpress.io',
-  sitemapPath: 'sitemap.xml',
+  sitemap: {
+    hostname: 'https://metalpress.io'
+  },
+  rss: {
+    feedOptions: {
+      title: 'MetalPress',
+      site_url: 'http://metalpress.io',
+    }
+  },
+  production: false,
   ignore: [
     '_data/**',
     '_drafts/*.md',
