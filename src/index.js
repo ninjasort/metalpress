@@ -1,5 +1,6 @@
 import path             from 'path';
 import fs               from 'fs';
+import deepAssign       from 'deep-assign';
 import Metalsmith       from 'metalsmith';
 import collections      from 'metalsmith-collections';
 import metadata         from 'metalsmith-metadata';
@@ -90,7 +91,7 @@ const DEFAULT_OPTIONS = {
 
 export default function (config = {}, callback) {
 
-  const options = Object.assign({}, DEFAULT_OPTIONS, config);
+  const options = deepAssign({}, DEFAULT_OPTIONS, config);
 
   // Config
   // --------------------------------------------------------------------------
@@ -200,8 +201,8 @@ export default function (config = {}, callback) {
   }
 
   if (options.middleware) {
-    for (const plugin of options.middleware) {
-      m.use(plugin);
+    for (const plugin in options.middleware) {
+      m.use(options.middleware[plugin]);
     }
   }
 

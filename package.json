@@ -19,6 +19,7 @@
     "prepublish": "npm test && npm run lint && npm run build"
   },
   "dependencies": {
+    "deep-assign": "2.0.0",
     "metalsmith": "2.1.0",
     "metalsmith-autoprefixer": "1.1.0",
     "metalsmith-broken-link-checker": "0.1.9",
