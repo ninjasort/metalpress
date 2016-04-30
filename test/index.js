@@ -9,13 +9,13 @@ import assign from 'deep-assign';
 
 describe('metalpress', () => {
 
-  it('should be a function', function () {
+  it('should be a function', () => {
     expect(metalpress).to.be.a('function');
   });
 
   describe('standard build', () => {
 
-    it('should set correct global metadata by default', function (done) {
+    it('should set correct global metadata by default', (done) => {
       const m = metalpress(standardConfig, (err, files) => {
         expect(m.metadata().production).to.be.false;
         expect(m.metadata().title).to.equal('Metalpress');
@@ -24,7 +24,7 @@ describe('metalpress', () => {
       });
     });
 
-    it('should work with DEFAULT_OPTIONS', function (done) {
+    it('should work with DEFAULT_OPTIONS', (done) => {
       const m = metalpress(standardConfig, (err, files) => {
         equal('test/fixtures/standard/dist', 'test/fixtures/standard/expected');
         done();
@@ -35,7 +35,7 @@ describe('metalpress', () => {
 
   describe('production build', () => {
 
-    it('should override global metadata when passed in config', function (done) {
+    it('should override global metadata when passed in config', (done) => {
       const m = metalpress(prodConfig, (err, files) => {
         expect(m.metadata().production).to.be.true;
         expect(m.metadata().title).to.equal('New Blog');
@@ -44,7 +44,7 @@ describe('metalpress', () => {
       });
     });
 
-    it('should build sitemap.xml file', function (done) {
+    it('should build sitemap.xml file', (done) => {
       const m = metalpress(prodConfig, (err, files) => {
         const sitemap = fs.statSync('test/fixtures/production/dist/sitemap.xml');
         expect(sitemap.isFile()).to.be.true;
@@ -52,7 +52,7 @@ describe('metalpress', () => {
       });
     });
 
-    it('should build an rss.xml file', function (done) {
+    it('should build an rss.xml file', (done) => {
       const m = metalpress(prodConfig, (err, files) => {
         const rss = fs.statSync('test/fixtures/production/dist/rss.xml');
         expect(rss.isFile()).to.be.true;
@@ -60,6 +60,6 @@ describe('metalpress', () => {
       });
     });
 
-  })
+  });
 
 });
