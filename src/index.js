@@ -1,7 +1,7 @@
 import path             from 'path';
 import fs               from 'fs';
-import deepAssign       from 'deep-assign';
 import Metalsmith       from 'metalsmith';
+import deepAssign       from 'deep-assign';
 import collections      from 'metalsmith-collections';
 import metadata         from 'metalsmith-metadata';
 import markdown         from 'metalsmith-markdown';
@@ -31,65 +31,68 @@ import firebase         from 'metalsmith-firebase';
 import rss              from 'metalsmith-rss';
 import drafts           from 'metalsmith-drafts';
 
-const DEFAULT_OPTIONS = {
-  title: 'MetalPress',
-  description: 'Website to MetalPress',
-  url: 'https://metalpress.io',
-  sitemap: {
-    hostname: 'https://metalpress.io'
-  },
-  rss: {
-    feedOptions: {
-      title: 'MetalPress',
-      site_url: 'http://metalpress.io',
-    }
-  },
-  production: false,
-  ignore: [
-    '_data/**',
-    '_drafts/*.md',
-    'templates/**',
-    'lib/**',
-    'lib/**/.gitignore',
-    'lib/**/.bower.json',
-    'lib/**/.jshintrc',
-    'assets/js/**/!(.min).js'
-  ],
-  markdown: {
-    gfm: true,
-    tables: true
-  },
-  permalinks: {
-    relative: false,
-    pattern: ':title'
-  },
-  layouts: {
-    engine: 'liquid',
-    directory: 'templates/_layouts',
-    includeDir: 'templates/_includes'
-  },
-  inPlace: {
-    engine: 'liquid',
-    pattern: '**/*.liquid',
-    includeDir: 'templates/_includes'
-  },
-  sass: {
-    outputDir: 'assets/css',
-    sourceMap: true,
-    sourceMapEmbed: true
-  },
-  imagemin: {
-    optimizationLevel: 4,
-    progressive: true
-  },
-  htmlMinifier: {
-    removeComments: false,
-    removeEmptyAttributes: false
-  },
-  middleware: false
-};
-
 export default function (config = {}, callback) {
+
+  const DEFAULT_OPTIONS = {
+    metadata: {
+      title: 'Metalpress',
+      description: 'Create a blog with Metalpress.',
+      url: 'https://metalpress.io',
+      production: false
+    },
+    filedata: {},
+    sitemap: {
+      hostname: 'https://metalpress.io'
+    },
+    rss: {
+      feedOptions: {
+        title: 'MetalPress',
+        site_url: 'http://metalpress.io',
+      }
+    },
+    ignore: [
+      '_data/**',
+      '_drafts/*.md',
+      'templates/**',
+      'lib/**',
+      'lib/**/.gitignore',
+      'lib/**/.bower.json',
+      'lib/**/.jshintrc',
+      'assets/js/**/!(.min).js'
+    ],
+    markdown: {
+      gfm: true,
+      tables: true
+    },
+    permalinks: {
+      relative: false,
+      pattern: ':title'
+    },
+    layouts: {
+      engine: 'liquid',
+      directory: 'templates/_layouts',
+      includeDir: 'templates/_includes'
+    },
+    inPlace: {
+      engine: 'liquid',
+      pattern: '**/*.liquid',
+      includeDir: 'templates/_includes'
+    },
+    sass: {
+      outputDir: 'assets/css',
+      sourceMap: true,
+      sourceMapEmbed: true
+    },
+    imagemin: {
+      optimizationLevel: 4,
+      progressive: true
+    },
+    htmlMinifier: {
+      removeComments: false,
+      removeEmptyAttributes: false
+    },
+    middleware: false
+  };
 
   const options = deepAssign({}, DEFAULT_OPTIONS, config);
 
@@ -100,11 +103,15 @@ export default function (config = {}, callback) {
   // Metalsmith options
   // --------------------------------------------------------------------------
   m.clean(true);
-  m.destination('dist');
+  m.destination(config.destination || 'dist');
+
+  // Object Metadata
+  // --------------------------------------------------------------------------
+  m.metadata(options.metadata);
 
   // File Metadata
   // --------------------------------------------------------------------------
-  m.use(metadata(options.metadata));
+  m.use(metadata(options.filedata));
 
   // Firebase
   // --------------------------------------------------------------------------
@@ -116,7 +123,7 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   m.use(ignore(options.ignore));
 
-  if (options.production) {
+  if (m.metadata().production) {
     m.use(drafts());
   }
 
@@ -161,7 +168,7 @@ export default function (config = {}, callback) {
 
   // Styles
   // --------------------------------------------------------------------------
-  if (options.production) {
+  if (m.metadata().production) {
     options.sass.outputStyle = 'compressed';
     m.use(sass(options.sass));
   } else {
@@ -172,7 +179,7 @@ export default function (config = {}, callback) {
   // Js
   // --------------------------------------------------------------------------
   if (options.webpack) {
-    if (options.production) {
+    if (m.metadata().production) {
       m.use(webpack(options.webpack.prod));
     } else {
       m.use(webpack(options.webpack.dev));
@@ -181,21 +188,21 @@ export default function (config = {}, callback) {
 
   // Sitemap
   // --------------------------------------------------------------------------
-  if (options.production) {
+  if (m.metadata().production) {
     m.use(sitemap(options.sitemap));
   }
 
   // RSS Feed
   // --------------------------------------------------------------------------
   if (options.rss) {
-    if (options.production) {
+    if (m.metadata().production) {
       m.use(rss(options.rss));
     }
   }
 
   // Production
   // --------------------------------------------------------------------------
-  if (options.production) {
+  if (m.metadata().production) {
     m.use(imagemin(options.imagemin));
     m.use(htmlMinifier('*.html', options.htmlMinifier));
   }
@@ -208,10 +215,8 @@ export default function (config = {}, callback) {
     }
   }
 
-  // Build
-  // --------------------------------------------------------------------------
   m.build(callback);
 
-  return options;
+  return m;
 
 }

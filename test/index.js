@@ -1,23 +1,65 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
+import fs from 'fs';
 import metalpress from '../src';
-import testConfig from './fixtures/test-config';
+import standardConfig from './fixtures/standard/config';
+import prodConfig from './fixtures/production/config';
 import equal from 'assert-dir-equal';
+import assign from 'deep-assign';
 
 describe('metalpress', () => {
 
-  it('should be a function', () => {
+  it('should be a function', function () {
     expect(metalpress).to.be.a('function');
   });
 
-  it('should work with DEFAULT_OPTIONS', (done) => {
-    const options = metalpress(testConfig, (err, files) => {
+  describe('standard build', () => {
 
-      expect(options.title).to.equal('MetalPress');
-      equal('test/fixtures/dist', 'test/fixtures/expected');
-
-      done();
+    it('should set correct global metadata by default', function (done) {
+      const m = metalpress(standardConfig, (err, files) => {
+        expect(m.metadata().production).to.be.false;
+        expect(m.metadata().title).to.equal('Metalpress');
+        expect(m.metadata().description).to.equal('Create a blog with Metalpress.');
+        done();
+      });
     });
+
+    it('should work with DEFAULT_OPTIONS', function (done) {
+      const m = metalpress(standardConfig, (err, files) => {
+        equal('test/fixtures/standard/dist', 'test/fixtures/standard/expected');
+        done();
+      });
+    });
+
   });
+
+  describe('production build', () => {
+
+    it('should override global metadata when passed in config', function (done) {
+      const m = metalpress(prodConfig, (err, files) => {
+        expect(m.metadata().production).to.be.true;
+        expect(m.metadata().title).to.equal('New Blog');
+        expect(m.metadata().description).to.equal('Taylor Imma let you finish.. but..');
+        done();
+      });
+    });
+
+    it('should build sitemap.xml file', function (done) {
+      const m = metalpress(prodConfig, (err, files) => {
+        const sitemap = fs.statSync('test/fixtures/production/dist/sitemap.xml');
+        expect(sitemap.isFile()).to.be.true;
+        done();
+      });
+    });
+
+    it('should build an rss.xml file', function (done) {
+      const m = metalpress(prodConfig, (err, files) => {
+        const rss = fs.statSync('test/fixtures/production/dist/rss.xml');
+        expect(rss.isFile()).to.be.true;
+        done();
+      });
+    });
+
+  })
 
 });

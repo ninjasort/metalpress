@@ -15,6 +15,7 @@
     "lint": "eslint --ext .js,.jsx .",
     "lint:fix": "eslint --fix --ext .js,.jsx .",
     "test": "mocha --recursive --require babel-core/register",
+    "test:watch": "mocha --recursive --require babel-core/register -w",
     "build": "babel src -d lib",
     "prepublish": "npm test && npm run lint && npm run build"
   },

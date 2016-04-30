@@ -13,9 +13,9 @@ function plugin(options) {
 
 export default {
 
-  basePath: `${process.cwd()}/test/fixtures`,
+  basePath: `${process.cwd()}/test/fixtures/standard`,
 
-  metadata: {
+  filedata: {
     site: '_data/config.yaml'
   },
 
