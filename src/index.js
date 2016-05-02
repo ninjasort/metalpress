@@ -161,6 +161,16 @@ export default function (config = {}, callback) {
     m.use(pagination(options.pagination));
   }
 
+  // Post-template Middleware
+  // --------------------------------------------------------------------------
+  if (options.preMiddleware) {
+    for (const plugin in options.preMiddleware) {
+      if (options.preMiddleware[plugin]) {
+        m.use(options.preMiddleware[plugin]);
+      }
+    }
+  }
+
   // Templates
   // --------------------------------------------------------------------------
   m.use(layouts(options.layouts));
@@ -207,10 +217,12 @@ export default function (config = {}, callback) {
     m.use(htmlMinifier('*.html', options.htmlMinifier));
   }
 
-  if (options.middleware) {
-    for (const plugin in options.middleware) {
-      if (options.middleware[plugin]) {
-        m.use(options.middleware[plugin]);
+  // Post-template Middleware
+  // --------------------------------------------------------------------------
+  if (options.postMiddleware) {
+    for (const plugin in options.postMiddleware) {
+      if (options.postMiddleware[plugin]) {
+        m.use(options.postMiddleware[plugin]);
       }
     }
   }

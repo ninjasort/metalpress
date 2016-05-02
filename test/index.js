@@ -31,6 +31,46 @@ describe('metalpress', () => {
       });
     });
 
+    describe('middleware', () => {
+      
+      let addMeta;
+      beforeEach(() => {
+        addMeta = (data) => {
+          return (files, metalsmith, next) => {
+            for(const file in files) {
+              files[file].preTemplateData = data;
+            }
+            next();
+          }
+        }
+      });
+
+      it('should use preMiddleware', (done) => {
+        const config = Object.assign({}, standardConfig, {
+          preMiddleware: [
+            addMeta(true)
+          ]
+        })
+        const m = metalpress(config, (err, files) => {
+          expect(files['home/index.html'].preTemplateData).to.be.true;
+          done();
+        });
+      });
+
+      it('should use postMiddleware', (done) => {
+        const config = Object.assign({}, standardConfig, {
+          postMiddleware: [
+            addMeta(true)
+          ]
+        })
+        const m = metalpress(config, (err, files) => {
+          expect(files['home/index.html'].preTemplateData).to.be.true;
+          done();
+        });
+      });
+
+    });
+
   });
 
   describe('production build', () => {
