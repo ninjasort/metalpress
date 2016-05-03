@@ -173,6 +173,12 @@ export default function (config = {}, callback) {
   }
   m.use(autoprefixer());
 
+  // Fingerprinting
+  // --------------------------------------------------------------------------
+  if (m.metadata().production && options.fingerprint) {
+    m.use(fingerprint(options.fingerprint));
+  }
+
   // Post-template Middleware
   // --------------------------------------------------------------------------
   if (options.preMiddleware) {
