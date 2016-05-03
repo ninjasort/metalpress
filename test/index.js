@@ -100,6 +100,19 @@ describe('metalpress', () => {
       });
     });
 
+    it('should remove sourcemaps in js and css', (done) => {
+      const m = metalpress(prodConfig, (err, files) => {
+        equal('test/fixtures/production/dist/assets', 'test/fixtures/production/expected/assets');
+        try {
+          const cssSourceMap = fs.statSync('test/fixtures/production/dist/assets/css/main.css.map');
+        } catch (e) {
+          // no file
+          expect(e.code).to.equal('ENOENT');
+        }
+        done();
+      });
+    });
+
   });
 
 });

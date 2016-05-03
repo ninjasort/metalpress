@@ -165,6 +165,8 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   if (m.metadata().production) {
     options.sass.outputStyle = 'compressed';
+    options.sass.sourceMap = false;
+    options.sass.sourceMapEmbed = false;
     m.use(sass(options.sass));
   } else {
     m.use(sass(options.sass));

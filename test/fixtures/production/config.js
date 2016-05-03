@@ -1,15 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-// import webpack from 'webpack'
-// import webpackConfig from '../webpack.config.babel';
-// import webpackProdConfig from '../webpack.config.prod.babel'
-// import customTags from './customtags';
-
-function plugin(options) {
-  return (files, metalsmith, next) => {
-    next();
-  };
-}
+import webpackProdConfig from './webpack.config.prod.babel'
 
 export default {
 
@@ -64,11 +55,8 @@ export default {
     hostname: 'http://testsite.com'
   },
 
-  webpack: false,
-  // webpack: webpackConfig,
-  // webpackProd: webpackProdConfig,
+  webpack: {
+    prod: webpackProdConfig
+  }
 
-  middleware: [
-    plugin({ testing: 'testing middleware' })
-  ]
 };

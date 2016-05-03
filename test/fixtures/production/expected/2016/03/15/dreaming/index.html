@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang=en><head></head><body><p>There&#39;s a total of 395 static site generators <a href=https://staticsitegenerators.net/ >out there</a> on the web, and probably even more found on Github. It&#39;s pretty clear to see that developers want good tooling to rapidly build static sites. Github advocates for <a href=https://jekyllrb.com/ >Jekyll</a> and allows you to freely <a href=https://pages.github.com/ >host</a> a Jekyll site as a Organization or Project. A lot of people might be okay with this solution for a simple blog or open source project, however if you want a faster development environment and more flexibility to customize the functionality of your site, you might find this solution limiting. As I was rebuilding my site, I definitely wanted to shift off of Jekyll and go with something that allowed for extending functionality with Javasrcipt in ES6.</p><h2 id=metalsmith>Metalsmith</h2><p><a href=https://github.com/segmentio/metalsmith>Metalsmith</a> is an <em>extremely pluggable</em> static site generator built with Javascript and Node.js by the team over at <a href=https://segment.com/home>Segment</a>. It has a simple design in and of itself, however the power comes in from the number of <a href=https://github.com/lambtron/awesome-metalsmith/blob/master/PLUGINS.md>plugins</a> available in the Metalsmith ecosystem. In this post we&#39;ll take a look at some of these plugins and how they might fit into a simple workflow of building a static blog.</p><p>To get started let&#39;s create a new directory: <code>mkdir metalsmith-blog</code> and initialize it with <code>npm init</code>. You can build your site with either the Metalsmith CLI or the Javascript API. Let&#39;s take a look at both and you&#39;ll get to see which one might work better for your particular use case.</p><h2 id=cli>CLI</h2><p>To use the Metalsmith CLI, let&#39;s install it globally with <code>npm i -g metalsmith</code>. In order for metalsmith to do it&#39;s work, we&#39;ll need to create a <code>metalsmith.json</code> file with a configuration for our site:</p><pre><code class="hljs json">{
+  "<span class=hljs-attribute>source</span>": <span class=hljs-value><span class=hljs-string>"src"</span></span>,
+  "<span class=hljs-attribute>destination</span>": <span class=hljs-value><span class=hljs-string>"build"</span></span>,
+  "<span class=hljs-attribute>plugins</span>": <span class=hljs-value>{}
+</span>}</code></pre><p>With this configuration, Metalsmith will read all the files in the source directory (<code>src</code>) and copy them into the destination (<code>build</code>) directory. As you can see we&#39;ll also have the opportunity to include plugins that will process our files along the way. Let&#39;s add a few plugins that we can use to build a basic blog page with posts.</p><p>We&#39;ll need a way to render markdown files to html, so let&#39;s install <code>metalsmith-markdown</code>.</p><pre><code class="hljs sh">$ npm i metalsmith-markdown --save</code></pre><p>Great, we&#39;ll also need a way to render our markdown in some sort of template. Metalsmith used to have a <code>metalsmith-templates</code> plugin, however this has been divided into two smaller plugins named <code>metalsmith-layouts</code> and <code>metalsmith-in-place</code>. At first, I wasn&#39;t sure the difference here, but there&#39;s a difference between the two. <code>metalsmith-in-place</code> renders files within your <code>src</code> directory, whereas <code>metalsmith-layouts</code> renders files from a root <code>layouts</code> directory. This allows you to separate layout specific code from source-specific template logic that may exist in a source file. One of the benefits of Metalsmith is how flexible it is in regards to templating. With consolidate.js behind the scenes, you can use any <a href="">templating engine</a> of your choice. In this case, we&#39;ll use liquid because of it&#39;s familiar for people migrating from Jekyll.</p><p>Let&#39;s install them both:</p><pre><code class="hljs sh">$ npm i metalsmith-layouts metalsmith-in-place --save</code></pre><p>Let&#39;s also install tinyliquid for our template engine.</p><pre><code class="hljs sh">$ npm i tinyliquid --save</code></pre><p>Great, lastly we&#39;ll need a way to output a collection of posts and create pretty permalinks such as <code>/blog/metalsmith-post/</code> versus <code>/blog/metalsmith-post/index.html</code>. Let&#39;s do that by installing <code>metalsmith-collections</code> and <code>metalsmith-permalinks</code>.</p><pre><code class="hljs sh">$ npm i metalsmith-permalinks metalsmith-collections --save</code></pre><p>Cool! Now let&#39;s set up our plugins in our <code>metalsmith.json</code>:</p><pre><code class="hljs json">"plugins": {
+        "metalsmith-collections": {
+            "posts": {
+                "pattern": "blog/!(index).md"
+            }
+        },
+        "metalsmith-markdown": {
+            "gfm": true
+        },
+        "metalsmith-layouts": {
+            "engine": "liquid",
+            "directory": "layouts",
+            "includeDir": "layouts/includes"
+        },
+        "metalsmith-in-place": {
+            "engine": "liquid",
+            "pattern": "**/*.html",
+            "includeDir": "layouts/includes"
+        },
+        "metalsmith-permalinks": {
+            "pattern": "blog/:title"
+        }
+    }</code></pre><p>You&#39;ll notice we&#39;re configuring each plugin with it&#39;s respective options. You can learn more about the options at each plugin&#39;s Github repo. Here we&#39;re collecting posts from our blog directory, rending layouts and source files while allowing us to utilize liquid&#39;s includes <code>{% include partial-name %}</code>, and creating permalinks for our posts with the <code>title</code> from our post front-matter.</p><p>Now let&#39;s set up some layouts we can use for our landing page, post, and blog page:</p><pre><code class="hljs sh">$ mkdir -p layouts/includes &amp;&amp; touch layouts/base.liquid &amp;&amp; touch layouts/includes/blog.liquid &amp;&amp; touch layouts/post.liquid</code></pre><h4 id=layouts-base-liquid>layouts/base.liquid</h4><pre><code class="hljs html"><span class=hljs-doctype>&lt;!DOCTYPE html&gt;</span>
+<span class=hljs-tag>&lt;<span class=hljs-title>html</span>&gt;</span>
+  <span class=hljs-tag>&lt;<span class=hljs-title>head</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>title</span>&gt;</span>World Traveler<span class=hljs-tag>&lt;/<span class=hljs-title>title</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>meta</span> <span class=hljs-attribute>charset</span>=<span class=hljs-value>"utf-8"</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>meta</span> <span class=hljs-attribute>name</span>=<span class=hljs-value>"viewport"</span> <span class=hljs-attribute>content</span>=<span class=hljs-value>"width=device-width, initial-scale=1.0"</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>link</span> <span class=hljs-attribute>rel</span>=<span class=hljs-value>"stylesheet"</span> <span class=hljs-attribute>href</span>=<span class=hljs-value>"//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>link</span> <span class=hljs-attribute>rel</span>=<span class=hljs-value>"stylesheet"</span> <span class=hljs-attribute>href</span>=<span class=hljs-value>"/css/style.css"</span>&gt;</span>
+  <span class=hljs-tag>&lt;/<span class=hljs-title>head</span>&gt;</span>
+  <span class=hljs-tag>&lt;<span class=hljs-title>body</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>header</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"header"</span>&gt;</span>
+      <span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"navbar"</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>a</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"navbar-brand"</span> <span class=hljs-attribute>href</span>=<span class=hljs-value>"/"</span>&gt;</span>World Traveler<span class=hljs-tag>&lt;/<span class=hljs-title>a</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>ul</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"nav navbar-nav"</span>&gt;</span>
+      <span class=hljs-tag>&lt;<span class=hljs-title>li</span>&gt;</span>
+        <span class=hljs-tag>&lt;<span class=hljs-title>a</span> <span class=hljs-attribute>href</span>=<span class=hljs-value>"/"</span>&gt;</span>Home<span class=hljs-tag>&lt;/<span class=hljs-title>a</span>&gt;</span>
+      <span class=hljs-tag>&lt;/<span class=hljs-title>li</span>&gt;</span>
+      <span class=hljs-tag>&lt;<span class=hljs-title>li</span>&gt;</span>
+        <span class=hljs-tag>&lt;<span class=hljs-title>a</span> <span class=hljs-attribute>href</span>=<span class=hljs-value>"/blog"</span>&gt;</span>Blog<span class=hljs-tag>&lt;/<span class=hljs-title>a</span>&gt;</span>
+      <span class=hljs-tag>&lt;/<span class=hljs-title>li</span>&gt;</span>
+    <span class=hljs-tag>&lt;/<span class=hljs-title>ul</span>&gt;</span>
+      <span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span>
+    <span class=hljs-tag>&lt;/<span class=hljs-title>header</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"container"</span>&gt;</span>
+      <span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"row"</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"col-md-12"</span>&gt;</span>
+      <span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"content"</span>&gt;</span>
+        {{ contents }}
+      <span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span>
+    <span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span>
+      <span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span>
+    <span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span>
+  <span class=hljs-tag>&lt;/<span class=hljs-title>body</span>&gt;</span>
+<span class=hljs-tag>&lt;/<span class=hljs-title>html</span>&gt;</span></code></pre><h4 id=layouts-includes-blog-liquid>layouts/includes/blog.liquid</h4><pre><code class="hljs html"><span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"posts"</span>&gt;</span>
+  <span class=hljs-tag>&lt;<span class=hljs-title>ul</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"posts__list"</span>&gt;</span>
+    {% for post in collections.posts %}
+    <span class=hljs-tag>&lt;<span class=hljs-title>li</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"post"</span>&gt;</span>
+      <span class=hljs-tag>&lt;<span class=hljs-title>a</span> <span class=hljs-attribute>href</span>=<span class=hljs-value>"/blog/{{ post.title | downcase | split: ' ' | join: '-'}}"</span>&gt;</span>{{ post.title }}<span class=hljs-tag>&lt;/<span class=hljs-title>a</span>&gt;</span>
+    <span class=hljs-tag>&lt;/<span class=hljs-title>li</span>&gt;</span>
+    {% endfor %}
+  <span class=hljs-tag>&lt;/<span class=hljs-title>ul</span>&gt;</span>
+<span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span></code></pre><p>Here we&#39;re looping over our post collection with <code>collections.posts</code> and including our post partial passing in the post data.</p><h4 id=layouts-post-liquid>layouts/post.liquid</h4><pre><code class="hljs html"><span class=hljs-doctype>&lt;!DOCTYPE html&gt;</span>
+<span class=hljs-tag>&lt;<span class=hljs-title>html</span>&gt;</span>
+  <span class=hljs-tag>&lt;<span class=hljs-title>head</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>title</span>&gt;</span>World Traveler<span class=hljs-tag>&lt;/<span class=hljs-title>title</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>meta</span> <span class=hljs-attribute>charset</span>=<span class=hljs-value>"utf-8"</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>meta</span> <span class=hljs-attribute>name</span>=<span class=hljs-value>"viewport"</span> <span class=hljs-attribute>content</span>=<span class=hljs-value>"width=device-width, initial-scale=1.0"</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>link</span> <span class=hljs-attribute>rel</span>=<span class=hljs-value>"stylesheet"</span> <span class=hljs-attribute>href</span>=<span class=hljs-value>"//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"</span>&gt;</span>
+  <span class=hljs-tag>&lt;/<span class=hljs-title>head</span>&gt;</span>
+  <span class=hljs-tag>&lt;<span class=hljs-title>body</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>header</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"header"</span>&gt;</span>
+      <span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"navbar"</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>a</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"navbar-brand"</span> <span class=hljs-attribute>href</span>=<span class=hljs-value>"/"</span>&gt;</span>World Traveler<span class=hljs-tag>&lt;/<span class=hljs-title>a</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>ul</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"nav navbar-nav"</span>&gt;</span>
+      <span class=hljs-tag>&lt;<span class=hljs-title>li</span>&gt;</span>
+        <span class=hljs-tag>&lt;<span class=hljs-title>a</span> <span class=hljs-attribute>href</span>=<span class=hljs-value>"/"</span>&gt;</span>Home<span class=hljs-tag>&lt;/<span class=hljs-title>a</span>&gt;</span>
+      <span class=hljs-tag>&lt;/<span class=hljs-title>li</span>&gt;</span>
+      <span class=hljs-tag>&lt;<span class=hljs-title>li</span>&gt;</span>
+        <span class=hljs-tag>&lt;<span class=hljs-title>a</span> <span class=hljs-attribute>href</span>=<span class=hljs-value>"/blog"</span>&gt;</span>Blog<span class=hljs-tag>&lt;/<span class=hljs-title>a</span>&gt;</span>
+      <span class=hljs-tag>&lt;/<span class=hljs-title>li</span>&gt;</span>
+    <span class=hljs-tag>&lt;/<span class=hljs-title>ul</span>&gt;</span>
+      <span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span>
+    <span class=hljs-tag>&lt;/<span class=hljs-title>header</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"container"</span>&gt;</span>
+      <span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"row"</span>&gt;</span>
+    <span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"col-md-12"</span>&gt;</span>
+      <span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"post"</span>&gt;</span>
+        <span class=hljs-tag>&lt;<span class=hljs-title>h3</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"post-title"</span>&gt;</span>{{ title }}<span class=hljs-tag>&lt;/<span class=hljs-title>h3</span>&gt;</span>
+        <span class=hljs-tag>&lt;<span class=hljs-title>p</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"post-date"</span>&gt;</span>{{ date | date: "%b %d, %Y" }}<span class=hljs-tag>&lt;/<span class=hljs-title>p</span>&gt;</span>
+        <span class=hljs-tag>&lt;<span class=hljs-title>div</span> <span class=hljs-attribute>class</span>=<span class=hljs-value>"post-content"</span>&gt;</span>
+          {{ contents }}
+        <span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span>
+      <span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span>
+    <span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span>
+      <span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span>
+    <span class=hljs-tag>&lt;/<span class=hljs-title>div</span>&gt;</span>
+  <span class=hljs-tag>&lt;/<span class=hljs-title>body</span>&gt;</span>
+<span class=hljs-tag>&lt;/<span class=hljs-title>html</span>&gt;</span></code></pre><p>Finally, let&#39;s create a <code>src</code> directory and add in a markdown for a landing, blog page, and new blog post:</p><pre><code class=hljs>$ mkdir -<span class=hljs-tag>p</span> src/blog &amp;&amp; touch src/index<span class=hljs-class>.md</span> &amp;&amp; touch src/blog/index<span class=hljs-class>.md</span> &amp;&amp; touch src/blog/<span class=hljs-number>2015</span>-<span class=hljs-number>11</span>-<span class=hljs-number>05</span>-new-york-visit.md</code></pre><h4 id=src-index-md>src/index.md</h4><pre><code class="hljs md"><span class=hljs-horizontal_rule>---</span>
+layout: base.liquid
+title: World Traveler
+<span class=hljs-header>permalink: false
+---</span>
+
+A site about my travels...</code></pre><p>You&#39;ll notice here we&#39;re setting <code>permalink</code> to false. This tells our permalink plugin not to render this page under <code>blog</code> which we have set up as our permalink path.</p><h4 id=src-blog-index-md>src/blog/index.md</h4><pre><code class="hljs md"><span class=hljs-horizontal_rule>---</span>
+layout: base.liquid
+title: Blog
+<span class=hljs-header>permalink: false
+---</span>
+
+{% include blog %}</code></pre><h4 id=src-posts-2015-11-05-new-york-visit-md>src/posts/2015-11-05-new-york-visit.md</h4><pre><code class=hljs><span class=hljs-bullet>---
+</span>layout: post.liquid
+title: Traveling to New York
+<span class=hljs-header>date: 2015-11-06
+---</span>
+
+This month we'll learn about the delights of New York City...</code></pre><p>Now let&#39;s add a npm script to run the CLI with <code>npm run build</code>:</p><pre><code class="hljs json">{
+    "<span class=hljs-attribute>scripts</span>": <span class=hljs-value>{
+        "<span class=hljs-attribute>build</span>": <span class=hljs-value><span class=hljs-string>"metalsmith"</span>
+    </span>}
+</span>}</code></pre><p>Finally we can run:</p><pre><code class="hljs sh">$ npm run build</code></pre><p>Here we have a simple landing page and blog page with a blog post. Let&#39;s add some styling with sass.</p><pre><code class="hljs sh">$ npm i metalsmith-sass --save</code></pre><pre><code class="hljs json">"metalsmith-sass": {
+        "outputDir": "css"
+    }</code></pre><pre><code class="hljs sh">$ mkdir src/sass &amp;&amp; touch src/sass/style.scss</code></pre><h4 id=src-styles-style-scss>src/styles/style.scss</h4><pre><code><span class=hljs-tag>body</span> <span class=hljs-rules>{
+  <span class=hljs-rule><span class=hljs-attribute>margin</span>:<span class=hljs-value> <span class=hljs-number>0</span></span></span>;
+  <span class=hljs-rule><span class=hljs-attribute>font-family</span>:<span class=hljs-value> <span class=hljs-string>'Helvetica'</span></span></span>;
+  <span class=hljs-rule><span class=hljs-attribute>font-weight</span>:<span class=hljs-value> <span class=hljs-number>100</span></span></span>;
+  <span class=hljs-rule><span class=hljs-attribute>font-size</span>:<span class=hljs-value> <span class=hljs-number>18px</span></span></span>;
+  <span class=hljs-rule><span class=hljs-attribute>line-height</span>:<span class=hljs-value> <span class=hljs-number>1.5</span></span></span>;
+<span class=hljs-rule>}</span></span>
+
+<span class=hljs-tag>a</span> <span class=hljs-rules>{
+  <span class=hljs-rule><span class=hljs-attribute>color</span>:<span class=hljs-value> <span class=hljs-hexcolor>#053580</span></span></span>;
+  <span class=hljs-rule><span class=hljs-attribute>font-weight</span>:<span class=hljs-value> <span class=hljs-number>400</span></span></span>;
+  <span class=hljs-rule><span class=hljs-attribute>text-shadow</span>:<span class=hljs-value> <span class=hljs-number>0px</span> <span class=hljs-number>0px</span> <span class=hljs-number>0px</span> <span class=hljs-hexcolor>#fff</span></span></span>;
+<span class=hljs-rule>}</span></span>
+
+<span class=hljs-class>.content</span> <span class=hljs-rules>{
+    <span class=hljs-rule><span class=hljs-attribute>padding</span>:<span class=hljs-value> <span class=hljs-number>20px</span></span></span>;
+<span class=hljs-rule>}</span></span>
+
+<span class=hljs-class>.navbar</span> <span class=hljs-rules>{
+  <span class=hljs-rule><span class=hljs-attribute>padding</span>:<span class=hljs-value> <span class=hljs-number>20px</span></span></span>;
+<span class=hljs-rule>}</span></span></code></pre><p>And we&#39;ll add our link tag: <code>&lt;link rel=&quot;stylesheet&quot; href=&quot;/css/style.css&quot;&gt;</code></p><p>Let&#39;s also add a nice header image courtesy of <a href=https://unsplash.com/photos/SR68yPh06As>Unsplash</a></p><p>Add the jpeg in <code>src/assets</code>.</p><pre><code><span class=hljs-class>.header</span> <span class=hljs-rules>{
+  <span class=hljs-rule><span class=hljs-attribute>background-image</span>:<span class=hljs-value> <span class=hljs-function>url</span>(<span class=hljs-string>"/assets/header.jpeg"</span>)</span></span>;
+  <span class=hljs-rule><span class=hljs-attribute>background-size</span>:<span class=hljs-value> cover</span></span>;
+  <span class=hljs-rule><span class=hljs-attribute>min-height</span>:<span class=hljs-value> <span class=hljs-number>300px</span></span></span>;
+  <span class=hljs-rule><span class=hljs-attribute>background-position</span>:<span class=hljs-value> center -<span class=hljs-number>95%</span></span></span>;
+<span class=hljs-rule>}</span></span></code></pre><p>Let&#39;s run the build again and start a local server.</p><pre><code class="hljs sh">$ npm run build &amp;&amp; serve build</code></pre><p>So now that we have a pretty good sense of what Metalsmith can do, let&#39;s take a look at how you might run the same build using the API with Babel and finish off our blog by minifying our html. This will make our site nice and fast!</p><p>If you aren&#39;t already up to speed with Babel 6, go ahead and install the CLI with: <code>npm i -g babel-cli</code>. Then we can set up our <code>.babelrc</code>.</p><pre><code class="hljs sh">$ touch .babelrc &amp;&amp; npm install babel-preset-es2015 --save-dev</code></pre><h4 id=-babelrc>.babelrc</h4><pre><code class="hljs json">{
+    "<span class=hljs-attribute>presets</span>": <span class=hljs-value>[<span class=hljs-string>"es2015"</span>]
+</span>}</code></pre><h2 id=metalsmith-s-api>Metalsmith&#39;s API</h2><p>Let&#39;s firstly install <code>metalsmith</code>.</p><pre><code class="hljs sh">$ npm i metalsmith --save</code></pre><p>Next, let&#39;s create a <code>build.js</code> and write our build script.</p><pre><code class="hljs sh">$ touch build.js</code></pre><pre><code class="hljs js">import Metalsmith from <span class=hljs-string>'metalsmith'</span>;
+import collections from <span class=hljs-string>'metalsmith-collections'</span>;
+import layouts from <span class=hljs-string>'metalsmith-layouts'</span>;
+import inPlace from <span class=hljs-string>'metalsmith-in-place'</span>;
+import markdown from <span class=hljs-string>'metalsmith-markdown'</span>;
+import permalinks from <span class=hljs-string>'metalsmith-permalinks'</span>;
+import sass from <span class=hljs-string>'metalsmith-sass'</span>;
+
+Metalsmith(__dirname)
+  .use(collections({
+    posts: {
+      pattern: <span class=hljs-string>'blog/!(index).md'</span>,
+      sortBy: <span class=hljs-string>'date'</span>,
+      reverse: <span class=hljs-literal>true</span>
+    }
+  }))
+  .use(sass({
+    outputDir: <span class=hljs-string>'css'</span>
+  }))
+  .use(markdown({
+    gfm: <span class=hljs-literal>true</span>
+  }))
+  .use(permalinks({
+    pattern: <span class=hljs-string>'blog/:title'</span>
+  }))
+  .use(layouts({
+    engine: <span class=hljs-string>'liquid'</span>,
+    directory: <span class=hljs-string>'layouts'</span>,
+    includeDir: <span class=hljs-string>'layouts/includes'</span>
+  }))
+  .use(inPlace({
+    engine: <span class=hljs-string>'liquid'</span>,
+    pattern: <span class=hljs-string>'**/*.html'</span>,
+    includeDir: <span class=hljs-string>'layouts/includes'</span>
+  }))
+  .build(<span class=hljs-function><span class=hljs-keyword>function</span> <span class=hljs-params>()</span> </span>{
+    <span class=hljs-built_in>console</span>.log(<span class=hljs-string>'Cheers!'</span>);
+  });</code></pre><p>Great, here we can see Metalsmith uses <code>.use</code> to invoke the plugins in order from top to bottom similar to express middleware, each function gets invoked with all the files from the previous function, processed and passed along. Let&#39;s run our build with <code>babel-node</code>:</p><pre><code class="hljs sh">$ babel-node build.js</code></pre><p>Lastly, let&#39;s add html minification.</p><pre><code class="hljs sh">$ npm i metalsmith-html-minifier --save</code></pre><pre><code class="hljs js">...
+import htmlMinifier from <span class=hljs-string>'metalsmith-html-minifier'</span>;
+
+...
+
+.use(htmlMinifier())
+.build(<span class=hljs-function><span class=hljs-keyword>function</span> <span class=hljs-params>()</span> </span>{
+    <span class=hljs-built_in>console</span>.log(<span class=hljs-string>'Cheers!'</span>);
+})</code></pre><p>And now we can adjust our build script.</p><pre><code class="hljs sh">{
+    <span class=hljs-string>"scripts"</span>: {
+        <span class=hljs-string>"build"</span>: <span class=hljs-string>"babel-node build.js"</span>
+    }
+}</code></pre><p>Again, let&#39;s run our build.</p><pre><code class="hljs sh">$ npm run build</code></pre><h2 id=conclusion>Conclusion</h2><p>As you can see Metalsmith is <em>extremely</em> flexible and has a number of <a href=http://www.metalsmith.io/#the-plugins>plugins</a> you can choose from to extend your site to fit your needs. There are plugins ranging from tag generators, to s3 upload, to browserify and webpack bundling. You&#39;ll definitely have the flexibility and you can also run your builds nicely with ES6 using Babel 6.</p><p>From here, you may want to expand the structure of your layouts and src directories to better suite your project. Also, if you&#39;re looking for a way to build multiple permalinks, you can use something like <a href=https://github.com/ericgj/metalsmith-branch>metalsmith-branch</a> to break out the permalinks for different paths.</p><p>I hope you were able to learn more about Metalsmith and you&#39;ll consider using it on your next project! Check out the <a href=http://cameronjroe.com/metalsmith-blog/ >Demo</a> and <a href=https://github.com/cameronjroe/metalsmith-blog>Code</a>.</p></body></html>
