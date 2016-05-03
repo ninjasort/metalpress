@@ -22,7 +22,7 @@ module.exports = {
     ]
   },
   externals: {
-    'jquery': 'jQuery',
+    'jquery': 'jQuery'
   },
   plugins: [
     new BowerWebpackPlugin({
@@ -45,4 +45,4 @@ module.exports = {
     quiet: true,
     noInfo: true
   }
-}
+};
