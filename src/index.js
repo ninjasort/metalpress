@@ -161,6 +161,16 @@ export default function (config = {}, callback) {
     m.use(pagination(options.pagination));
   }
 
+  // Styles
+  // --------------------------------------------------------------------------
+  if (m.metadata().production) {
+    options.sass.outputStyle = 'compressed';
+    m.use(sass(options.sass));
+  } else {
+    m.use(sass(options.sass));
+  }
+  m.use(autoprefixer());
+
   // Post-template Middleware
   // --------------------------------------------------------------------------
   if (options.preMiddleware) {
@@ -175,16 +185,6 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   m.use(layouts(options.layouts));
   m.use(inPlace(options.inPlace));
-
-  // Styles
-  // --------------------------------------------------------------------------
-  if (m.metadata().production) {
-    options.sass.outputStyle = 'compressed';
-    m.use(sass(options.sass));
-  } else {
-    m.use(sass(options.sass));
-  }
-  m.use(autoprefixer());
 
   // Js
   // --------------------------------------------------------------------------
