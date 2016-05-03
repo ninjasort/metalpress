@@ -37,12 +37,12 @@ describe('metalpress', () => {
       beforeEach(() => {
         addMeta = (data) => {
           return (files, metalsmith, next) => {
-            for(const file in files) {
+            for (const file in files) {
               files[file].preTemplateData = data;
             }
             next();
-          }
-        }
+          };
+        };
       });
 
       it('should use preMiddleware', (done) => {
@@ -50,7 +50,7 @@ describe('metalpress', () => {
           preMiddleware: [
             addMeta(true)
           ]
-        })
+        });
         const m = metalpress(config, (err, files) => {
           expect(files['home/index.html'].preTemplateData).to.be.true;
           done();
@@ -62,7 +62,7 @@ describe('metalpress', () => {
           postMiddleware: [
             addMeta(true)
           ]
-        })
+        });
         const m = metalpress(config, (err, files) => {
           expect(files['home/index.html'].preTemplateData).to.be.true;
           done();
