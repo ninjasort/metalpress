@@ -28,6 +28,10 @@ export default {
     }
   },
 
+  fingerprint: {
+    pattern: 'assets/css/main.css'
+  },
+
   permalinks: {
     relative: false,
     linksets: [{
