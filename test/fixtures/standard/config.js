@@ -1,9 +1,5 @@
 import path from 'path';
 import fs from 'fs';
-// import webpack from 'webpack'
-// import webpackConfig from '../webpack.config.babel';
-// import webpackProdConfig from '../webpack.config.prod.babel'
-// import customTags from './customtags';
 
 export default {
 
@@ -26,10 +22,6 @@ export default {
       sortBy: 'date',
       reverse: true
     }
-  },
-
-  fingerprint: {
-    pattern: 'assets/css/main.css'
   },
 
   permalinks: {
@@ -56,8 +48,6 @@ export default {
     hostname: 'http://testsite.com'
   },
 
-  webpack: false,
-  // webpack: webpackConfig,
-  // webpackProd: webpackProdConfig,
+  webpack: false
 
 };
