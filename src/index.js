@@ -51,6 +51,7 @@ export default function (config = {}, callback) {
       }
     },
     ignore: [
+      'data/**',
       '_data/**',
       '_drafts/*.md',
       'templates/**',
