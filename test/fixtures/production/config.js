@@ -20,6 +20,10 @@ export default {
     url: 'https://axisdefined.firebaseio.com'
   },
 
+  fingerprint: {
+    pattern: 'assets/css/main.css'
+  },
+
   collections: {
     pages: {
       pattern: 'pages/*.md'
