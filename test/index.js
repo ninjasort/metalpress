@@ -27,7 +27,21 @@ describe('metalpress', () => {
     });
 
     it('should work with DEFAULT_OPTIONS', (done) => {
-      const m = metalpress(standardConfig, (err, files) => {
+      const config = Object.assign({}, standardConfig, {
+        ignore: [
+          'data/**',
+          '_data/**',
+          '_drafts/*.md',
+          'templates/**',
+          'lib/**',
+          'lib/**/.gitignore',
+          'lib/**/.bower.json',
+          'lib/**/.jshintrc',
+          'assets/js/**/!(.min).js',
+          'assets/css/main.css.map'
+        ]
+      });
+      const m = metalpress(config, (err, files) => {
         equal('test/fixtures/standard/dist', 'test/fixtures/standard/expected');
         done();
       });
