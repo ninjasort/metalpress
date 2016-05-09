@@ -11,9 +11,9 @@ before_install:
   - npm i -g npm@^2.0.0
 before_script:
   - npm prune
-  - npm test
+  - npm cover
   - npm run lint
-  - npm run check-coverage
+  # - npm run check-coverage
   - npm run build
 after_success:
   - npm run report-coverage
