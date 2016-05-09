@@ -17,9 +17,9 @@
     "lint": "eslint --ext .js,.jsx .",
     "lint:fix": "eslint --fix --ext .js,.jsx .",
     "test": "mocha --recursive --compilers js:babel-register",
-    "test:watch": "mocha --recursive --compilers js:babel-register -w",
+    "test:watch": "npm t -- -w",
+    "cover": "nyc npm t -r lcov",
     "build": "babel src -d lib",
-    "prepublish": "npm test && npm run lint && npm run build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "dependencies": {
@@ -67,7 +67,8 @@
     "eslint-config-airbnb": "8.0.0",
     "eslint-plugin-import": "1.6.1",
     "mocha": "2.x",
-    "sinon": "1.17.4",
-    "semantic-release": "^4.3.5"
+    "nyc": "6.4.4",
+    "semantic-release": "^4.3.5",
+    "sinon": "1.17.4"
   }
 }
