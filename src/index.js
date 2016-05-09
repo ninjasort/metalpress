@@ -19,6 +19,7 @@ import webpack          from 'metalsmith-webpack';
 import ignore           from 'metalsmith-ignore';
 import metallic         from 'metalsmith-metallic';
 import tags             from 'metalsmith-tags';
+import shortcodes       from 'metalsmith-flexible-shortcodes';
 // TODO: ->
 import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
@@ -42,8 +43,6 @@ export default function (config = {}, callback) {
       production: false
     },
     filedata: {},
-    sitemap: false,
-    rss: false,
     ignore: [
       'data/**',
       '_data/**',
@@ -177,6 +176,12 @@ export default function (config = {}, callback) {
   // Markdown
   // --------------------------------------------------------------------------
   m.use(markdown(options.markdown));
+
+  // Shortcodes
+  // --------------------------------------------------------------------------
+  if (options.shortcodes) {
+    m.use(shortcodes(options.shortcodes));
+  }
 
   // Excerpts
   // --------------------------------------------------------------------------

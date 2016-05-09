@@ -24,6 +24,16 @@ export default {
     }
   },
 
+  shortcodes: {
+    clean: true,
+    shortcodes: {
+      'flickr': function(str, params) {
+        console.log(params);
+        return '<img href="' + params.src + '" />';
+      }
+    }
+  },
+
   permalinks: {
     relative: false,
     linksets: [{

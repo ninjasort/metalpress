@@ -19,10 +19,18 @@ describe('metalpress', () => {
 
     it('should set correct global metadata by default', (done) => {
       const m = metalpress(standardConfig, (err, files) => {
-        console.log(err);
         expect(m.metadata().production).to.be.false;
         expect(m.metadata().title).to.equal('Metalpress');
         expect(m.metadata().description).to.equal('Create a blog with Metalpress.');
+        done();
+      });
+    });
+
+    it('should have shortcodes', (done) => {
+      const m = metalpress(standardConfig, (err, files) => {
+        const post = fs.readFileSync('test/fixtures/standard/dist/2016/03/15/dreaming/index.html', 'utf-8');
+        const found = post.search(/<img href="https\:\/\/www\.flickr\.com\/photos\/curlywurly1st\/14438479793\/in\/explore\-2014\-06\-14" \/>/g);
+        expect(found).to.be.above(-1);
         done();
       });
     });
