@@ -19,6 +19,8 @@
     "test": "mocha --recursive --compilers js:babel-register",
     "test:watch": "npm t -- -w",
     "cover": "nyc npm t -r lcov",
+    "check-coverage": "nyc check-coverage --lines 95 --functions 95 --branches 95",
+    "report-coverage": "codecov -t 759de1b3-35e5-4742-a96e-3d6d37d6f4bd",
     "build": "babel src -d lib",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
@@ -63,6 +65,7 @@
     "babel-register": "6.8.0",
     "bower-webpack-plugin": "0.1.9",
     "chai": "3.5.0",
+    "codecov": "1.0.1",
     "eslint": "2.9.0",
     "eslint-config-airbnb": "8.0.0",
     "eslint-plugin-import": "1.6.1",
