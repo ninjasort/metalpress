@@ -2,8 +2,6 @@
 
 > Create a blog easily with Metalsmith.
 
-**UNDER DEVELOPMENT - (ALPHA)**
-
 An opinionated boilerplate for quickly creating a blog with [Metalsmith](https://github.com/metalsmith/metalsmith).
 
 ## Features
@@ -30,13 +28,19 @@ To get started with metalpress, simply create a `metalpress.config.js` and add t
 ```js
 import path from 'path';
 import webpackConfig from './webpack.config.babel';
+import webpackProdConfig from './webpack.config.prod.babel';
 
 export default {
 
   basePath: path.resolve(__dirname, '.'),
 
   metadata: {
-    site: '_data/_config.yaml'
+    title: 'Metalpress',
+    description: 'Build a static blog easily with Metalsmith.'
+  },
+
+  filedata: {
+    site: 'data/_config.yaml'
   },
 
   firebase: {
@@ -79,7 +83,8 @@ export default {
   },
 
   webpack: {
-    dev: webpackConfig
+    dev: webpackConfig,
+    prod: webpackProdConfig
   }
 
 }
@@ -92,7 +97,7 @@ Next, create a directory structure including the following:
 ├── metalpress.config.js
 ├── package.json
 ├── src
-│   ├── _data
+│   ├── data
 │   ├── assets
 │       ├── sass
 │       ├── js
@@ -104,6 +109,7 @@ Next, create a directory structure including the following:
 │   ├── _includes
 │   └── _layouts
 └── webpack.config.babel.js
+└── webpack.config.prod.babel.js
 ```
 
 To use metalpress, simply run it with the configuration in your gulpfile:
@@ -161,6 +167,49 @@ module.exports = {
 }
 ```
 
+```js
+import path from 'path';
+import webpack from 'webpack';
+import BowerWebpackPlugin from 'bower-webpack-plugin';
+
+export default {
+  entry: path.resolve(__dirname, './src/assets/js/index.js'),
+  output: {
+    path: path.resolve(__dirname, './dist/assets/js'),
+    filename: 'bundle.js'
+  },
+  module: {
+    loaders: [
+      { 
+        test: /\.js$/, 
+        exclude: /(node_modules|src\/lib)/,
+        loader: 'babel'
+      }
+    ]
+  },
+  externals: {
+    'jquery': 'jQuery'
+  },
+  plugins: [
+    new BowerWebpackPlugin({
+      modulesDirectories: ['src/lib'],
+      manifestFiles: 'bower.json'
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      compress: {
+        warnings: false
+      },
+      output: {
+        comments: false
+      }
+    }),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin()
+  ]
+}
+```
+
 ## Default Options
 
 All options can be overridden with their respective plugin options.
@@ -172,6 +221,7 @@ All options can be overridden with their respective plugin options.
   url: 'https://metalpress.io',
   sitemapPath: 'sitemap.xml',
   ignore: [
+    'data/**',
     '_data/**',
     '_drafts/*.md',
     'templates/**',
@@ -181,6 +231,9 @@ All options can be overridden with their respective plugin options.
     'lib/**/.jshintrc',
     'assets/js/**/!(.min).js'
   ],
+  fingerprint: {
+    pattern: 'assets/css/main.css'
+  },
   markdown: {
     gfm: true,
     tables: true
@@ -232,7 +285,3 @@ gulp.task('metalpress:prod', () => {
 });
 
 ```
-
-
-
-
