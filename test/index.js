@@ -19,9 +19,18 @@ describe('metalpress', () => {
 
     it('should set correct global metadata by default', (done) => {
       const m = metalpress(standardConfig, (err, files) => {
+        console.log(err);
         expect(m.metadata().production).to.be.false;
         expect(m.metadata().title).to.equal('Metalpress');
         expect(m.metadata().description).to.equal('Create a blog with Metalpress.');
+        done();
+      });
+    });
+
+    it('should have tags', (done) => {
+      const m = metalpress(standardConfig, (err, files) => {
+        const tags = fs.statSync('test/fixtures/standard/dist/topics/dreaming/index.html');
+        expect(tags.isFile()).to.be.true;
         done();
       });
     });

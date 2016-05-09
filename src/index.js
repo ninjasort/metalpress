@@ -18,10 +18,11 @@ import autoprefixer     from 'metalsmith-autoprefixer';
 import webpack          from 'metalsmith-webpack';
 import ignore           from 'metalsmith-ignore';
 import metallic         from 'metalsmith-metallic';
+import tags             from 'metalsmith-tags';
 // TODO: ->
 import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
-import buildDate        from 'metalsmith-build-date';
+import date             from 'metalsmith-build-date';
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
 import fingerprint      from 'metalsmith-fingerprint';
@@ -75,6 +76,26 @@ export default function (config = {}, callback) {
     fingerprint: {
       pattern: 'assets/css/main.css'
     },
+    tags: {
+      // yaml key for tag list in you pages
+      handle: 'tags',
+      // path for result pages
+      path: 'topics/:tag.html',
+      // layout to use for tag listing
+      layout: 'tag.liquid',
+      // provide posts sorted by 'date' (optional)
+      sortBy: 'date',
+      // sort direction (optional)
+      reverse: true,
+      // skip updating metalsmith's metadata object.
+      // useful for improving performance on large blogs
+      // (optional)
+      skipMetadata: false,
+      // Any options you want to pass to the [slug](https://github.com/dodo/node-slug) package.
+      // Can also supply a custom slug function.
+      // slug: function(tag) { return tag.toLowerCase() }
+      slug: {mode: 'rfc3986'}
+    },
     sass: {
       outputDir: 'assets/css',
       sourceMap: true,
@@ -111,6 +132,10 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   m.use(metadata(options.filedata));
 
+  // Build Date
+  // --------------------------------------------------------------------------
+  m.use(date({ key: 'dateBuilt' }));
+
   // Firebase
   // --------------------------------------------------------------------------
   if (options.firebase) {
@@ -121,6 +146,8 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   m.use(ignore(options.ignore));
 
+  // Drafts
+  // --------------------------------------------------------------------------
   if (m.metadata().production) {
     m.use(drafts());
   }
@@ -137,10 +164,16 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   m.use(jekyllDates());
 
+  // Tags
+  // --------------------------------------------------------------------------
+  if (options.tags) {
+    m.use(tags(options.tags));
+  }
+
   // Code Highlighting
   // --------------------------------------------------------------------------
   m.use(metallic());
-  
+
   // Markdown
   // --------------------------------------------------------------------------
   m.use(markdown(options.markdown));
