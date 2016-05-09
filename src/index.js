@@ -41,15 +41,8 @@ export default function (config = {}, callback) {
       production: false
     },
     filedata: {},
-    sitemap: {
-      hostname: 'https://metalpress.io'
-    },
-    rss: {
-      feedOptions: {
-        title: 'MetalPress',
-        site_url: 'http://metalpress.io',
-      }
-    },
+    sitemap: false,
+    rss: false,
     ignore: [
       'data/**',
       '_data/**',
@@ -79,6 +72,9 @@ export default function (config = {}, callback) {
       pattern: '**/*.liquid',
       includeDir: 'templates/_includes'
     },
+    fingerprint: {
+      pattern: 'assets/css/main.css'
+    },
     sass: {
       outputDir: 'assets/css',
       sourceMap: true,
@@ -92,7 +88,8 @@ export default function (config = {}, callback) {
       removeComments: false,
       removeEmptyAttributes: false
     },
-    middleware: false
+    preMiddleware: false,
+    postMiddleware: false
   };
 
   const options = deepAssign({}, DEFAULT_OPTIONS, config);
@@ -207,7 +204,7 @@ export default function (config = {}, callback) {
 
   // Sitemap
   // --------------------------------------------------------------------------
-  if (m.metadata().production) {
+  if (m.metadata().production && options.sitemap) {
     m.use(sitemap(options.sitemap));
   }
 
