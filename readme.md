@@ -1,4 +1,4 @@
-# metalpress 
+# metalpress [![npm](https://img.shields.io/npm/v/metalpress.svg?maxAge=2592000?style=flat-square)](https://www.npmjs.com/package/metalpress) [![Travis](https://img.shields.io/travis/cameronroe/metalpress.svg?maxAge=2592000?style=flat-square)](https://travis-ci.org/cameronroe/metalpress) [![Codecov](https://img.shields.io/codecov/c/github/cameronroe/metalpress.svg?maxAge=2592000?style=flat-square)](https://codecov.io/gh/cameronroe/metalpress) 
 
 > Create a blog easily with Metalsmith.
 
