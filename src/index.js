@@ -176,7 +176,7 @@ export default function (config = {}, callback) {
 
   // Fingerprinting
   // --------------------------------------------------------------------------
-  if (m.metadata().production && options.fingerprint) {
+  if (options.fingerprint) {
     m.use(fingerprint(options.fingerprint));
   }
 
