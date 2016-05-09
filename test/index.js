@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import fs from 'fs';
+import path from 'path';
+import rimraf from 'rimraf';
 import metalpress from '../src';
 import standardConfig from './fixtures/standard/config';
 import prodConfig from './fixtures/production/config';
