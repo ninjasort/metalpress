@@ -19,7 +19,6 @@ import webpack          from 'metalsmith-webpack';
 import ignore           from 'metalsmith-ignore';
 import metallic         from 'metalsmith-metallic';
 import tags             from 'metalsmith-tags';
-// TODO: ->
 import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
 import date             from 'metalsmith-build-date';
