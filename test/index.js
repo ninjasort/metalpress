@@ -19,7 +19,6 @@ describe('metalpress', () => {
 
     it('should set correct global metadata by default', (done) => {
       const m = metalpress(standardConfig, (err, files) => {
-        console.log(err);
         expect(m.metadata().production).to.be.false;
         expect(m.metadata().title).to.equal('Metalpress');
         expect(m.metadata().description).to.equal('Create a blog with Metalpress.');
