@@ -26,10 +26,10 @@ export default {
 
   collections: {
     pages: {
-      pattern: 'pages/*.md'
+      pattern: 'pages/*.html'
     },
     posts: {
-      pattern: 'posts/!(index).md',
+      pattern: 'posts/!(index).html',
       sortBy: 'date',
       reverse: true
     }

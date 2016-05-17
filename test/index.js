@@ -26,6 +26,14 @@ describe('metalpress', () => {
       });
     });
 
+    it('should set correct metadata on collections', (done) => {
+      const m = metalpress(standardConfig, (err, files) => {
+        expect(m.metadata().collections.posts).to.be.ok;
+        expect(m.metadata().collections.posts[0].excerpt).to.be.ok;
+        done();
+      })
+    });
+
     it('should have tags', (done) => {
       const m = metalpress(standardConfig, (err, files) => {
         const tags = fs.statSync('test/fixtures/standard/dist/topics/dreaming/index.html');

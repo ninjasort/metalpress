@@ -155,10 +155,6 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   m.use(define({ moment }));
 
-  // Attach Collections
-  // --------------------------------------------------------------------------
-  m.use(collections(options.collections));
-
   // Date
   // --------------------------------------------------------------------------
   m.use(jekyllDates());
@@ -181,6 +177,10 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   m.use(excerpts());
 
+  // Attach Collections
+  // --------------------------------------------------------------------------
+  m.use(collections(options.collections));
+  
   // Permalinks
   // --------------------------------------------------------------------------
   m.use(permalinks(options.permalinks));
