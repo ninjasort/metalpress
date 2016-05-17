@@ -87,8 +87,7 @@ export default function (config = {}, callback) {
       // sort direction (optional)
       reverse: true,
       // skip updating metalsmith's metadata object.
-      // useful for improving performance on large blogs
-      // (optional)
+      // useful for improving performance on large blogs (optional)
       skipMetadata: false,
       // Any options you want to pass to the [slug](https://github.com/dodo/node-slug) package.
       // Can also supply a custom slug function.
@@ -180,7 +179,7 @@ export default function (config = {}, callback) {
   // Attach Collections
   // --------------------------------------------------------------------------
   m.use(collections(options.collections));
-  
+
   // Permalinks
   // --------------------------------------------------------------------------
   m.use(permalinks(options.permalinks));
