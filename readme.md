@@ -49,10 +49,10 @@ export default {
 
   collections: {
     pages: {
-      pattern: 'pages/*.md'
+      pattern: 'pages/*.html' // these are rendered after markdown
     },
     posts: {
-      pattern: 'posts/!(index).md',
+      pattern: 'posts/!(index).html',
       sortBy: 'date',
       reverse: true
     }
