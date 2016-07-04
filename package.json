@@ -3,7 +3,7 @@
   "description": "Create a blog easily with Metalsmith.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cameronroe/metalpress.git"
+    "url": "https://github.com/axisdefined/metalpress.git"
   },
   "license": "MIT",
   "main": "lib/index.js",
