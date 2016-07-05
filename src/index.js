@@ -9,7 +9,7 @@ import layouts          from 'metalsmith-layouts';
 import inPlace          from 'metalsmith-in-place';
 import permalinks       from 'metalsmith-permalinks';
 import pagination       from 'metalsmith-pagination';
-import excerpts         from 'metalsmith-excerpts';
+import excerpts         from 'metalsmith-better-excerpts';
 import sass             from 'metalsmith-sass';
 import moment           from 'moment';
 import define           from 'metalsmith-define';
@@ -94,6 +94,9 @@ export default function (config = {}, callback) {
       // slug: function(tag) { return tag.toLowerCase() }
       slug: {mode: 'rfc3986'}
     },
+    excerpts: {
+      pruneLength: 80
+    },
     sass: {
       outputDir: 'assets/css',
       sourceMap: true,
@@ -174,7 +177,7 @@ export default function (config = {}, callback) {
 
   // Excerpts
   // --------------------------------------------------------------------------
-  m.use(excerpts());
+  m.use(excerpts(options.excerpts));
 
   // Attach Collections
   // --------------------------------------------------------------------------

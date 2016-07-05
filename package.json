@@ -28,6 +28,7 @@
     "deep-assign": "2.0.0",
     "metalsmith": "2.1.0",
     "metalsmith-autoprefixer": "1.1.0",
+    "metalsmith-better-excerpts": "0.1.7",
     "metalsmith-broken-link-checker": "0.1.10",
     "metalsmith-build-date": "0.2.0",
     "metalsmith-collections": "0.7.0",
