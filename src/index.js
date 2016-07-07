@@ -31,6 +31,8 @@ import firebase         from 'metalsmith-firebase';
 import rss              from 'metalsmith-rss';
 import drafts           from 'metalsmith-drafts';
 
+import customTags       from './custom-tags';
+
 export default function (config = {}, callback) {
 
   const DEFAULT_OPTIONS = {
@@ -65,7 +67,8 @@ export default function (config = {}, callback) {
     layouts: {
       engine: 'liquid',
       directory: 'templates/_layouts',
-      includeDir: 'templates/_includes'
+      includeDir: 'templates/_includes',
+      filters: customTags
     },
     inPlace: {
       engine: 'liquid',

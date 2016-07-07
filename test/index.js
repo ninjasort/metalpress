@@ -42,6 +42,12 @@ describe('metalpress', () => {
       });
     });
 
+    xit('should include a filter', (done) => {
+      const m = metalpress(standardConfig, (err, files) => {
+        
+      });
+    });
+
     // TODO: Fix this test for travis
     xit('should work with DEFAULT_OPTIONS', (done) => {
       const m = metalpress(standardConfig, (err, files) => {
