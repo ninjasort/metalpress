@@ -97,7 +97,9 @@ export default function (config = {}, callback) {
       // Any options you want to pass to the [slug](https://github.com/dodo/node-slug) package.
       // Can also supply a custom slug function.
       // slug: function(tag) { return tag.toLowerCase() }
-      slug: {mode: 'rfc3986'}
+      slug: {
+        mode: 'rfc3986'
+      }
     },
     excerpts: {
       pruneLength: 80

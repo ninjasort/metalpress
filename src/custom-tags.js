@@ -1,5 +1,5 @@
 export default {
-  modulo: function (number, mod) {
+  modulo(number, mod) {
     return number % mod;
   }
-}
+};
