@@ -25,12 +25,7 @@
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "dependencies": {
-    "babel-cli": "6.10.1",
-    "babel-core": "6.10.4",
-    "babel-eslint": "6.1.2",
     "deep-assign": "2.0.0",
-    "eslint": "3.0.1",
-    "eslint-plugin-import": "1.10.3",
     "metalsmith": "2.1.0",
     "metalsmith-autoprefixer": "1.1.0",
     "metalsmith-better-excerpts": "0.1.7",
@@ -61,7 +56,6 @@
     "metalsmith-tags": "1.2.1",
     "metalsmith-webpack": "1.0.3",
     "moment": "2.14.1",
-    "nyc": "7.0.0",
     "tinyliquid": "0.2.32"
   },
   "devDependencies": {
