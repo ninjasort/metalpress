@@ -22,6 +22,7 @@ import tags             from 'metalsmith-tags';
 import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
 import date             from 'metalsmith-build-date';
+import prompt           from 'metalsmith-prompt';
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
 import fingerprint      from 'metalsmith-fingerprint';
@@ -43,6 +44,7 @@ export default function (config = {}, callback) {
       production: false
     },
     filedata: {},
+    prompt: false,
     sitemap: false,
     rss: false,
     ignore: [
@@ -127,6 +129,12 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   m.clean(true);
   m.destination(config.destination || 'dist');
+  
+  // Prompt
+  // --------------------------------------------------------------------------
+  if (options.prompt) {
+    m.use(prompt(options.prompt));
+  }
 
   // Object Metadata
   // --------------------------------------------------------------------------
