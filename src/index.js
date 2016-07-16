@@ -23,6 +23,7 @@ import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
 import date             from 'metalsmith-build-date';
 import prompt           from 'metalsmith-prompt';
+import robots           from 'metalsmith-robots';
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
 import fingerprint      from 'metalsmith-fingerprint';
@@ -46,6 +47,10 @@ export default function (config = {}, callback) {
     filedata: {},
     prompt: false,
     sitemap: false,
+    robots: {
+      'disallow': ['404.html', '/assets/img'],
+      'sitemap': 'https://metalpress.io/sitemap.xml'
+    },
     rss: false,
     ignore: [
       'data/**',
@@ -255,6 +260,12 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   if (m.metadata().production && options.sitemap) {
     m.use(sitemap(options.sitemap));
+  }
+
+  // Robots
+  // --------------------------------------------------------------------------
+  if (options.robots) {
+    m.use(robots(options.robots));
   }
 
   // RSS Feed
