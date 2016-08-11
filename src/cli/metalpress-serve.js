@@ -1,7 +1,7 @@
 import commander from 'commander';
-import Init from '../sub-commands/init';
+import Serve from '../sub-commands/serve';
 
-const subCommand = new Init();
+const subCommand = new Serve();
 
 commander.on('--help', () => {
   subCommand.printUserHelp();

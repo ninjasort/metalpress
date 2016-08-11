@@ -13,16 +13,18 @@ import { fileExists } from '../util/fs';
 
 export default class ProjectSettings {
   constructor(relativePath) {
-    this.relativePath = relativePath || '../../templates/metalpress.config.js';
+    this.relativePath = relativePath || '../templates/metalpress.config.js';
     this.loadSettings();
   }
 
   loadSettings() {
     if (this.settingsExist()) {
-      this.settings = jf.readFileSync(this.settingsPath());
+      // this.settings = jf.readFileSync(this.settingsPath());
+      this.settings = require(this.settingsPath()).default;
     } else {
       this.buildFromTemplate();
-      this.settings = jf.readFileSync(this.settingsPath());
+      // this.settings = jf.readFileSync(this.settingsPath());
+      this.settings = require(this.settingsPath()).default;
     }
   }
 
@@ -37,7 +39,7 @@ export default class ProjectSettings {
   }
 
   settingsPath() {
-    return path.join(pwd(), 'metalpress.config.js');
+    return path.join(process.cwd(), 'metalpress.config.js');
   }
 
   settingsExist() {

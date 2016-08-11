@@ -4,7 +4,7 @@ import UI from './ui';
 class SubCommand {
   constructor(options = {}) {
     this.rawOptions = options;
-    this.settings = {};//options.settings || new ProjectSettings();
+    this.settings = options.settings || new ProjectSettings();
     this.ui = options.ui || new UI();
 
     this.environment = {
