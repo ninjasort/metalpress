@@ -5,7 +5,7 @@ import gulp from 'gulp';
 import s3 from 'gulp-s3';
 import browserSync from 'browser-sync';
 import metalpress from '../';
-import defaultConfig from '../templates/metalpress.config';
+// import defaultConfig from '../../templates/metalpress.config';
 
 // try {
 //   var awsStaging = JSON.parse(fs.readFileSync(path.resolve('./aws.json')));
@@ -50,7 +50,7 @@ export default class Serve extends SubCommand {
     super();
     this.serverStarted = false;
     this.baseDir = './dist';
-    this.config = this.settings.settings || defaultConfig;
+    this.config = this.settings.settings;
     this.defineTasks();
   }
 

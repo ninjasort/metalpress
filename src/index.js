@@ -34,9 +34,31 @@ import firebase         from 'metalsmith-firebase';
 import rss              from 'metalsmith-rss';
 import drafts           from 'metalsmith-drafts';
 
-import customTags       from './custom-tags';
+import customTags       from './config/custom-tags';
+import webpackDev       from './config/webpack.config';
+import webpackProd      from './config/webpack.prod.config';
 
 export default function (config = {}, callback) {
+  
+  const webpackRelative = {
+    entry: path.resolve(config.basePath, './src/assets/js/index.js'),
+    output: {
+      path: path.resolve(config.basePath, './dist/assets/js')
+    }
+  };
+  
+  var checkDataFiles = () => {
+    try {
+      var files = fs.readdirSync(path.resolve(config.basePath, './src/data'));
+      var dataFiles = {};
+      files.map((file) => {
+        dataFiles[file.split(path.extname(file))[0]] = `data/${file}`;
+      });
+      return dataFiles;
+    } catch(e) {
+      return {};
+    }
+  };
 
   const DEFAULT_OPTIONS = {
     metadata: {
@@ -45,7 +67,7 @@ export default function (config = {}, callback) {
       url: 'https://metalpress.io',
       production: false
     },
-    filedata: {},
+    filedata: checkDataFiles(),
     prompt: false,
     sitemap: false,
     robots: {
@@ -125,7 +147,11 @@ export default function (config = {}, callback) {
       removeEmptyAttributes: false
     },
     preMiddleware: false,
-    postMiddleware: false
+    postMiddleware: false,
+    webpack: {
+      dev: deepAssign({}, webpackDev, webpackRelative),
+      prod: deepAssign({}, webpackProd, webpackRelative)
+    }
   };
 
   const options = deepAssign({}, DEFAULT_OPTIONS, config);

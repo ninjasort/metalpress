@@ -2,6 +2,7 @@ import path from 'path';
 import { copySync } from 'fs-extra';
 import jf from 'jsonfile';
 import { pwd } from 'shelljs';
+import fs from 'fs';
 
 import { fileExists } from '../util/fs';
 
@@ -13,18 +14,16 @@ import { fileExists } from '../util/fs';
 
 export default class ProjectSettings {
   constructor(relativePath) {
-    this.relativePath = relativePath || '../templates/metalpress.config.js';
+    this.relativePath = relativePath || '../../templates/.metalpress';
     this.loadSettings();
   }
 
   loadSettings() {
     if (this.settingsExist()) {
-      // this.settings = jf.readFileSync(this.settingsPath());
-      this.settings = require(this.settingsPath()).default;
+      this.settings = jf.readFileSync(this.settingsPath());
     } else {
       this.buildFromTemplate();
-      // this.settings = jf.readFileSync(this.settingsPath());
-      this.settings = require(this.settingsPath()).default;
+      this.settings = jf.readFileSync(this.settingsPath());
     }
   }
 
@@ -39,7 +38,7 @@ export default class ProjectSettings {
   }
 
   settingsPath() {
-    return path.join(process.cwd(), 'metalpress.config.js');
+    return path.join(process.cwd(), '.metalpress');
   }
 
   settingsExist() {

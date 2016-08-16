@@ -77,11 +77,11 @@ export default class New extends SubCommand {
   // All settings for react-redux-starter-kit live in this template so when
   // new projects get created users can immediately start using the CLI
   createProjectSettings() {
-    this.ui.writeInfo('creating a default .reduxrc for your project');
-    const reduxStarterKitTemplate = '../../templates/.starterrc';
-    const settings = new ProjectSettings(reduxStarterKitTemplate);
+    this.ui.writeInfo('creating a default metalpress.config.js for your project');
+    const configTemplate = '../../templates/metalpress.config.js';
+    const settings = new ProjectSettings(configTemplate);
     settings.save();
 
-    this.ui.writeCreate('.reduxrc with starter kit settings saved.');
+    this.ui.writeCreate('metalpress.config.js with starter kit settings saved.');
   }
 }
