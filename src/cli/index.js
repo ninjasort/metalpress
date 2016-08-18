@@ -11,4 +11,7 @@ program
 program
   .command('serve', 'start a server on http://localhost:3000');
 
+program
+  .command('deploy', 'deploy a metalpress project');
+
 program.parse(process.argv);

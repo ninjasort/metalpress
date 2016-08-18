@@ -15,7 +15,7 @@ export default class Init extends SubCommand {
 
   printUserHelp() {
     this.ui.write(
-      'inititialization command to create a metalpress.config.js which has project settings'
+      'Initializes a .metalpress config with project settings.'
     );
   }
 
@@ -25,7 +25,7 @@ export default class Init extends SubCommand {
       this.ui.writeInfo('Saving your settings...');
       this.settings.setAllSettings(result);
       this.settings.save();
-      this.ui.writeCreate('metalpress.config.js with configuration saved in project root.');
+      this.ui.writeCreate('.metalpress with configuration saved in project root.');
     });
   }
 

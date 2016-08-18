@@ -20,33 +20,34 @@ export default class New extends SubCommand {
   }
 
   printUserHelp() {
-    this.ui.write('Command used for generating new metalpress projects');
+    this.ui.write('Creates a new metalpress project from a git repo starter boilerplate.\n');
   }
 
   run(cliArgs) {
     this.confirmGit();
     this.createDirTask.run(cliArgs).then(() => {
       let fetch_url;
+      
+      fetch_url = 'https://github.com/cameronroe/metalpress-boilerplate.git';
+      // if (cliArgs.useBoilerplate) {
+      //   fetch_url = 'https://github.com/cameronroe/metalpress-boilerplate.git';
+      // } else if (cliArgs.useUIKit) {
+      //   fetch_url = 'https://github.com/SpencerCDixon/redux-cli-ui-kit-boilerplate.git';
+      // } else {
+      //   fetch_url = 'https://github.com/davezuko/react-redux-starter-kit.git';
+      // }
 
-      if (cliArgs.useBoilerplate) {
-        fetch_url = 'https://github.com/cameronroe/metalpress-boilerplate.git';
-      } else if (cliArgs.useUIKit) {
-        fetch_url = 'https://github.com/SpencerCDixon/redux-cli-ui-kit-boilerplate.git';
-      } else {
-        fetch_url = 'https://github.com/davezuko/react-redux-starter-kit.git';
-      }
+      // if (cliArgs.useSsh) {
+      //   this.ui.writeInfo('Using SSH to fetch repo');
 
-      if (cliArgs.useSsh) {
-        this.ui.writeInfo('Using SSH to fetch repo');
-
-        if (cliArgs.useBoilerplate) {
-          fetch_url = 'git@github.com:SpencerCDixon/redux-cli-boilerplate.git';
-        } else if (cliArgs.useUIKit) {
-          fetch_url = 'https://github.com/SpencerCDixon/redux-cli-ui-kit-boilerplate.git';
-        } else {
-          fetch_url = 'git@github.com:davezuko/react-redux-starter-kit.git';
-        }
-      }
+      //   if (cliArgs.useBoilerplate) {
+      //     fetch_url = 'git@github.com:SpencerCDixon/redux-cli-boilerplate.git';
+      //   } else if (cliArgs.useUIKit) {
+      //     fetch_url = 'https://github.com/SpencerCDixon/redux-cli-ui-kit-boilerplate.git';
+      //   } else {
+      //     fetch_url = 'git@github.com:davezuko/react-redux-starter-kit.git';
+      //   }
+      // }
 
       this.gitPullTask.run(fetch_url).then(() => {
         this.createProjectSettings();
