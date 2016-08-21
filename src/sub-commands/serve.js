@@ -5,7 +5,6 @@ import gulp from 'gulp';
 import s3 from 'gulp-s3';
 import browserSync from 'browser-sync';
 import metalpress from '../';
-import {argv} from 'yargs';
 // import defaultConfig from '../../templates/metalpress.config';
 
 var paths = {

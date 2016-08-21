@@ -33,6 +33,10 @@ export default class ProjectSettings {
     );
   }
 
+  writeSecureJson(name, json) {
+    fs.writeFileSync(`${process.cwd()}/${name}`, JSON.stringify(json), {encoding: 'utf-8'});
+  }
+
   buildFromTemplate() {
     copySync(this.templatePath(), this.settingsPath());
   }

@@ -22,7 +22,6 @@ import tags             from 'metalsmith-tags';
 import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
 import date             from 'metalsmith-build-date';
-import prompt           from 'metalsmith-prompt';
 import robots           from 'metalsmith-robots';
 import shortcodes       from 'metalsmith-flexible-shortcodes';
 // prod
@@ -164,12 +163,6 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   m.clean(true);
   m.destination(config.destination || 'dist');
-  
-  // Prompt
-  // --------------------------------------------------------------------------
-  if (options.prompt) {
-    m.use(prompt(options.prompt));
-  }
 
   // Object Metadata
   // --------------------------------------------------------------------------
