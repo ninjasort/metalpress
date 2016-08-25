@@ -77,6 +77,7 @@ describe('metalpress', () => {
           ]
         });
         const m = metalpress(config, (err, files) => {
+          console.log(files['home/index.html'])
           expect(files['home/index.html'].preTemplateData).to.be.true;
           done();
         });
