@@ -141,7 +141,7 @@ export default function (config = {}, callback) {
         if (files[file].collection.length) {
           let collection = files[file].collection[0];
           let layout = config.pagination[`collections.${collection}`].layout;
-          if (config.pagination[`collections.${collection}`].pageMetadata.title) {
+          if (config.pagination[`collections.${collection}`].pageMetadata && config.pagination[`collections.${collection}`].pageMetadata.title) {
             files[file].title = config.pagination[`collections.${collection}`].pageMetadata.title;
           }
           files[file].layout = layout;
