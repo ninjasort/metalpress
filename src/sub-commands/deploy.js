@@ -44,7 +44,7 @@ export default class Deploy extends SubCommand {
       return gulp.src('dist/**')
         .pipe(s3(this.awsStaging, awsOptions));
     });
-
+    
     gulp.task('deploy:production', ['dist'], cb => {
       return gulp.src('dist/**')
         .pipe(s3(this.awsProd, awsOptions));

@@ -11,7 +11,7 @@ commander
   .option('-p, --production', 'Deploy to production')
   .parse(process.argv);
 
-let args = commander.args;
+let args = commander;
 
 if (args.production) {
   subCommand.run({ production: true });
