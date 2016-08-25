@@ -22,9 +22,12 @@ import tags             from 'metalsmith-tags';
 import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
 import date             from 'metalsmith-build-date';
-import prompt           from 'metalsmith-prompt';
 import robots           from 'metalsmith-robots';
 import shortcodes       from 'metalsmith-flexible-shortcodes';
+import diff             from 'metalsmith-differential';
+import {
+  loadJsOrYaml
+} from './util/fs';
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
 import fingerprint      from 'metalsmith-fingerprint';
@@ -34,99 +37,22 @@ import firebase         from 'metalsmith-firebase';
 import rss              from 'metalsmith-rss';
 import drafts           from 'metalsmith-drafts';
 
-import customTags       from './custom-tags';
+import createDefaults   from './config/defaults';
 
 export default function (config = {}, callback) {
 
-  const DEFAULT_OPTIONS = {
-    metadata: {
-      title: 'Metalpress',
-      description: 'Create a blog with Metalpress.',
-      url: 'https://metalpress.io',
-      production: false
-    },
-    filedata: {},
-    prompt: false,
-    sitemap: false,
-    robots: {
-      'disallow': ['404.html', '/assets/img'],
-      'sitemap': 'https://metalpress.io/sitemap.xml'
-    },
-    shortcodes: false,
-    rss: false,
-    ignore: [
-      'data/**',
-      '_data/**',
-      '_drafts/*.md',
-      'templates/**',
-      'lib/**',
-      'lib/**/.gitignore',
-      'lib/**/.bower.json',
-      'lib/**/.jshintrc',
-      'assets/js/**/!(.min).js'
-    ],
-    markdown: {
-      gfm: true,
-      tables: true
-    },
-    permalinks: {
-      relative: false,
-      pattern: ':title'
-    },
-    layouts: {
-      engine: 'liquid',
-      directory: 'templates/_layouts',
-      includeDir: 'templates/_includes',
-      filters: customTags
-    },
-    inPlace: {
-      engine: 'liquid',
-      pattern: '**/*.liquid',
-      includeDir: 'templates/_includes'
-    },
-    fingerprint: {
-      pattern: 'assets/css/main.css'
-    },
-    tags: {
-      // yaml key for tag list in you pages
-      handle: 'tags',
-      // path for result pages
-      path: 'topics/:tag.html',
-      // layout to use for tag listing
-      layout: 'tag.liquid',
-      // provide posts sorted by 'date' (optional)
-      sortBy: 'date',
-      // sort direction (optional)
-      reverse: true,
-      // skip updating metalsmith's metadata object.
-      // useful for improving performance on large blogs (optional)
-      skipMetadata: false,
-      // Any options you want to pass to the [slug](https://github.com/dodo/node-slug) package.
-      // Can also supply a custom slug function.
-      // slug: function(tag) { return tag.toLowerCase() }
-      slug: {
-        mode: 'rfc3986'
+  let DEFAULT_OPTIONS = createDefaults(config);
+  
+  try {
+    for (var collection in config.pagination) {
+      // check every pagination collection and load metadata into the original key
+      if (typeof config.pagination[collection].pageMetadata !== 'string') {
+        break;
       }
-    },
-    excerpts: {
-      pruneLength: 80
-    },
-    sass: {
-      outputDir: 'assets/css',
-      sourceMap: true,
-      sourceMapEmbed: true
-    },
-    imagemin: {
-      optimizationLevel: 4,
-      progressive: true
-    },
-    htmlMinifier: {
-      removeComments: false,
-      removeEmptyAttributes: false
-    },
-    preMiddleware: false,
-    postMiddleware: false
-  };
+      let metadata = path.resolve(config.basePath, './src', config.pagination[collection].pageMetadata);
+      config.pagination[collection].pageMetadata = loadJsOrYaml(metadata);
+    }
+  } catch(e) { console.log('could not resolve pagination metadata', e) }
 
   const options = deepAssign({}, DEFAULT_OPTIONS, config);
 
@@ -138,12 +64,6 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   m.clean(true);
   m.destination(config.destination || 'dist');
-  
-  // Prompt
-  // --------------------------------------------------------------------------
-  if (options.prompt) {
-    m.use(prompt(options.prompt));
-  }
 
   // Object Metadata
   // --------------------------------------------------------------------------
@@ -208,16 +128,32 @@ export default function (config = {}, callback) {
   // Attach Collections
   // --------------------------------------------------------------------------
   m.use(collections(options.collections));
-
-  // Permalinks
-  // --------------------------------------------------------------------------
-  m.use(permalinks(options.permalinks));
-
+  
   // Pagination
   // --------------------------------------------------------------------------
   if (options.pagination) {
     m.use(pagination(options.pagination));
   }
+
+  m.use((files, m, done) => {
+    for (let file in files) {
+      if (files[file].pagination) {
+        if (files[file].collection.length) {
+          let collection = files[file].collection[0];
+          let layout = config.pagination[`collections.${collection}`].layout;
+          if (config.pagination[`collections.${collection}`].pageMetadata.title) {
+            files[file].title = config.pagination[`collections.${collection}`].pageMetadata.title;
+          }
+          files[file].layout = layout;
+        }
+      }
+    }
+    done();
+  });
+
+  // Permalinks
+  // --------------------------------------------------------------------------
+  m.use(permalinks(options.permalinks));
 
   // Styles
   // --------------------------------------------------------------------------
@@ -300,6 +236,8 @@ export default function (config = {}, callback) {
       }
     }
   }
+
+  // m.use(diff());
 
   m.build(callback);
 
