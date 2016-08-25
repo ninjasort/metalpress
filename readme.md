@@ -6,7 +6,7 @@ An opinionated boilerplate for quickly creating a blog with [Metalsmith](https:/
 
 ## Features
 
-- Scaffolding CLI
+- CLI
 - Liquid Templating
 - Markdown Rendering
 - Permalinks
