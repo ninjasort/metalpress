@@ -87,6 +87,7 @@
     "metalsmith-tags": "1.2.1",
     "metalsmith-webpack": "1.0.3",
     "moment": "2.14.1",
+    "prompt": "1.0.0",
     "rimraf": "2.5.4",
     "shelljs": "0.7.3",
     "tinyliquid": "0.2.33"
