@@ -137,7 +137,7 @@ export const pagination = [
     type: 'input',
     name: 'paginationCollection',
     message: 'Type the collection you would like to paginate.',
-    before: (value) => {
+    filter: (value) => {
       return `collections.${value}`;
     }
   },
