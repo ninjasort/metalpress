@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import yaml from 'js-yaml';
 // import fse from 'fs-extra';
 // import temp from 'temp';
 // import denodeify from 'denodeify';
@@ -26,6 +27,20 @@ export const fileExists = (filename) => {
     }
   }
 };
+
+export const loadJsOrYaml = (string) => {
+  var metadata = {};
+  if (string.indexOf('yaml') !== -1) {
+    metadata = yaml.safeLoad(
+        fs.readFileSync(string, 'utf8')
+      );
+  } else if (string.indexOf('json') !== -1) {
+    metadata = JSON.parse(
+        fs.readFileSync(string, 'utf8')
+      );
+  }
+  return metadata;
+}
 
 export const readFile = (filename) => {
   const filePath = path.join(rootPath, filename);
