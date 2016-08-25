@@ -6,6 +6,7 @@ An opinionated boilerplate for quickly creating a blog with [Metalsmith](https:/
 
 ## Features
 
+- Scaffolding CLI
 - Liquid Templating
 - Markdown Rendering
 - Permalinks
@@ -23,265 +24,70 @@ $ npm install metalpress --save
 
 ## Usage
 
-To get started with metalpress, simply create a `metalpress.config.js` and add the configuration needed.
+To get started with metalpress, simply use the CLI to create a new project or initialize and existing directory.
 
+### Initialize
 ```js
-import path from 'path';
-import webpackConfig from './webpack.config.babel';
-import webpackProdConfig from './webpack.config.prod.babel';
-
-export default {
-
-  basePath: path.resolve(__dirname, '.'),
-
-  metadata: {
-    title: 'Metalpress',
-    description: 'Build a static blog easily with Metalsmith.'
-  },
-
-  filedata: {
-    site: 'data/_config.yaml'
-  },
-
-  firebase: {
-    url: 'https://mysite.firebaseio.com'
-  },
-
-  collections: {
-    pages: {
-      pattern: 'pages/*.html' // these are rendered after markdown
-    },
-    posts: {
-      pattern: 'posts/!(index).html',
-      sortBy: 'date',
-      reverse: true
-    }
-  },
-
-  permalinks: {
-    relative: false,
-    linksets: [
-    {
-      match: { collection: 'pages' },
-      pattern: ':title'
-    },
-    {
-       match: { collection: 'posts' },
-       pattern: ':date/:title'
-    }
-    ]
-  },
-
-  pagination: {
-     'collections.posts': {
-       perPage: 5,
-       first: 'blog/index.html',
-       path: 'blog/:num/index.html',
-       noPageOne: true,
-       layout: 'blog.liquid'
-     }
-  },
-
-  webpack: {
-    dev: webpackConfig,
-    prod: webpackProdConfig
-  }
-
-}
+metalpress init
 ```
+Prompts a series of questions and creates a new `.metalpress` config.
 
-Next, create a directory structure including the following:
+Metalpress works from a specific directory structure. It contains a `templates` and `src` directory.
+
+Here's an example structure:
 
 ```sh
-├── gulpfile.babel.js
-├── metalpress.config.js
 ├── package.json
 ├── src
 │   ├── data
+│       ├── site.yaml
+│       ├── projects.json
 │   ├── assets
 │       ├── sass
+│       ├── img
+│       ├── fonts
 │       ├── js
 │           ├── index.js
 │   ├── index.md
 │   ├── pages
+│       ├── about.md
 │   └── posts
+│       ├── 2016-08-25-how-to-use-metalpress.md
 ├── templates
 │   ├── _includes
+│       ├── header.liquid
+│       ├── footer.liquid
 │   └── _layouts
-└── webpack.config.babel.js
-└── webpack.config.prod.babel.js
+│       ├── home.liquid
 ```
 
-To use metalpress, simply run it with the configuration in your gulpfile:
-
-```js
-import metalpress from 'metalpress';
-import config from './metalpress.config.js';
-
-gulp.task('metalpress', () => {
-  const options = metalpress(config, (err, files) => {
-    if (err) throw new Error(err);
-    console.log('Metalpress site completed.');
-  });
-});
-```
+To use metalpress, simply run `metalpress serve`
 
 The project will be built to a `dist` directory.
 
-Next, if you want ES6/Bower support 
+You can use NPM/Bower packages within your js as well.
 
-- `$ npm install babel-loader bower-webpack-plugin --save-dev`
-- add the following to your `webpack.config.babel.js`:
+## Deployment
 
-```js
-import path from 'path';
-import BowerWebpackPlugin from 'bower-webpack-plugin';
+To deploy your site, you'll need to have your `aws.json` set up. It includes:
 
-module.exports = {
-  entry: path.resolve(__dirname, './src/assets/js/index.js'),
-  output: {
-    path: path.resolve(__dirname, './dist/assets/js'),
-    filename: 'bundle.min.js'
-  },
-  module: {
-    loaders: [
-      { 
-        test: /\.js$/, 
-        exclude: /(node_modules|src\/lib)/, 
-        loader: 'babel',
-        query: {
-          presets: ['es2015']
-        }
-      }
-    ]
-  },
-  externals: {
-    'jquery': 'jQuery',
-  },
-  plugins: [
-    new BowerWebpackPlugin({
-      modulesDirectories: ['src/lib'],
-      manifestFiles: 'bower.json'
-    })
-  ]
-}
 ```
-
-```js
-import path from 'path';
-import webpack from 'webpack';
-import BowerWebpackPlugin from 'bower-webpack-plugin';
-
-export default {
-  entry: path.resolve(__dirname, './src/assets/js/index.js'),
-  output: {
-    path: path.resolve(__dirname, './dist/assets/js'),
-    filename: 'bundle.js'
-  },
-  module: {
-    loaders: [
-      { 
-        test: /\.js$/, 
-        exclude: /(node_modules|src\/lib)/,
-        loader: 'babel'
-      }
-    ]
-  },
-  externals: {
-    'jquery': 'jQuery'
-  },
-  plugins: [
-    new BowerWebpackPlugin({
-      modulesDirectories: ['src/lib'],
-      manifestFiles: 'bower.json'
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      compress: {
-        warnings: false
-      },
-      output: {
-        comments: false
-      }
-    }),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin()
-  ]
-}
-```
-
-## Default Options
-
-All options can be overridden with their respective plugin options.
-
-```js
 {
-  title: 'MetalPress',
-  description: 'Website to MetalPress',
-  url: 'https://metalpress.io',
-  sitemapPath: 'sitemap.xml',
-  ignore: [
-    'data/**',
-    '_data/**',
-    '_drafts/*.md',
-    'templates/**',
-    'lib/**',
-    'lib/**/.gitignore',
-    'lib/**/.bower.json',
-    'lib/**/.jshintrc',
-    'assets/js/**/!(.min).js'
-  ],
-  fingerprint: {
-    pattern: 'assets/css/main.css'
-  },
-  markdown: {
-    gfm: true,
-    tables: true
-  },
-  permalinks: {
-    relative: false,
-    pattern: ':title'
-  },
-  layouts: {
-    engine: 'liquid',
-    directory: 'templates/_layouts',
-    includeDir: 'templates/_includes'
-  },
-  inPlace: {
-    engine: 'liquid',
-    pattern: '**/*.liquid',
-    includeDir: 'templates/_includes'
-  },
-  sass: {
-    outputDir: 'assets/css',
-    sourceMap: true,
-    sourceMapEmbed: true
-  },
-  imagemin: {
-    optimizationLevel: 4,
-    progressive: true
-  },
-  htmlMinifier: {
-    removeComments: false,
-    removeEmptyAttributes: false
-  }
+  "key":"AWS_ACCESS_KEY_HERE",
+  "secret":"AWS_SECRET_KEY_HERE",
+  "stagingBucket":"staging.example.com",
+  "productionBucket":"example.com"
 }
 ```
 
-## Production Builds
+Finally, you can run the deploy command.
 
-For production, simply overwrite the config with `production: true`.
+*Staging*
+```
+metalpress deploy
+```
 
-```js
-import metalpress from 'metalpress';
-import config from './metalpress.config.js';
-
-gulp.task('metalpress:prod', () => {
-  const config = {...config, production: true};
-  const options = metalpress(config, (err, files) => {
-    if (err) throw new Error(err);
-    console.log('Metalpress (production) site completed.');
-  });
-});
-
+*Production*
+```
+metalpress deploy -p
 ```
