@@ -27,7 +27,7 @@ export default function (config) {
     customWebpackDev.resolve = {
       root: [
         path.resolve(config.basePath, 'node_modules'),
-        path.resolve(config.basePath, 'src/lib'),
+        path.resolve(config.basePath, 'src/lib')
       ]
     };
     customWebpackProd.resolve = {
@@ -36,7 +36,7 @@ export default function (config) {
         path.resolve(config.basePath, 'src/lib')
       ]
     };
-  } catch (e) { console.log('Loading webpack defaults...') }
+  } catch (e) { console.log(e) }
 
   // jquery configuration
   try {
@@ -47,7 +47,7 @@ export default function (config) {
       delete customWebpackDev.jquery;
       delete customWebpackProd.jquery;
     }
-  } catch (e) {}
+  } catch (e) { console.log(e) }
 
   // plugins (bower-webpack-plugin)
   try {
@@ -67,7 +67,7 @@ export default function (config) {
       delete customWebpackDev.bower;
       delete customWebpackProd.bower;
     }
-  } catch (e) {}
+  } catch (e) { console.log(e) }
   
   // delete any original webpack objects
   delete config.webpack;

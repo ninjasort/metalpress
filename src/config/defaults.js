@@ -6,7 +6,6 @@ import configureWebpack        from './configure-webpack';
 export default function createDefaults(config) {
 
   var webpack = configureWebpack(config);
-  console.log(webpack);
 
   var DEFAULTS = {
   
