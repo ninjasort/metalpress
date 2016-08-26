@@ -25,9 +25,7 @@ import date             from 'metalsmith-build-date';
 import robots           from 'metalsmith-robots';
 import shortcodes       from 'metalsmith-flexible-shortcodes';
 import diff             from 'metalsmith-differential';
-import {
-  loadJsOrYaml
-} from './util/fs';
+import { loadJsOrYaml } from './util/fs';
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
 import fingerprint      from 'metalsmith-fingerprint';
@@ -41,8 +39,8 @@ import createDefaults   from './config/defaults';
 
 export default function (config = {}, callback) {
 
-  let DEFAULT_OPTIONS = createDefaults(config);
-  
+  let options = createDefaults(config);
+
   try {
     for (var collection in config.pagination) {
       // check every pagination collection and load metadata into the original key
@@ -53,8 +51,6 @@ export default function (config = {}, callback) {
       config.pagination[collection].pageMetadata = loadJsOrYaml(metadata);
     }
   } catch(e) { console.log('could not resolve pagination metadata', e) }
-
-  const options = deepAssign({}, DEFAULT_OPTIONS, config);
 
   // Config
   // --------------------------------------------------------------------------
