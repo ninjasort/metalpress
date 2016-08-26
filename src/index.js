@@ -138,7 +138,7 @@ export default function (config = {}, callback) {
   m.use((files, m, done) => {
     for (let file in files) {
       if (files[file].pagination) {
-        if (files[file].collection.length) {
+        if (files[file].collection && files[file].collection.length) {
           let collection = files[file].collection[0];
           let layout = config.pagination[`collections.${collection}`].layout;
           if (config.pagination[`collections.${collection}`].pageMetadata && config.pagination[`collections.${collection}`].pageMetadata.title) {
