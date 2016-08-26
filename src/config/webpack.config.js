@@ -1,5 +1,4 @@
 import path from 'path';
-import BowerWebpackPlugin from 'bower-webpack-plugin';
 
 export default {
   entry: path.resolve(__dirname, './src/assets/js/index.js'),
@@ -27,14 +26,5 @@ export default {
   },
   resolveLoader: {
     root: path.join(__dirname, '../../node_modules')
-  },
-  externals: {
-    'jquery': 'jQuery'
-  },
-  plugins: [
-    new BowerWebpackPlugin({
-      modulesDirectories: ['src/lib'],
-      manifestFiles: 'bower.json'
-    })
-  ]
+  }
 }

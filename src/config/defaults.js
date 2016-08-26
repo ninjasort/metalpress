@@ -1,19 +1,14 @@
-import path             from 'path';
-import deepAssign       from 'deep-assign';
-import customTags       from './custom-tags';
-import webpackDev       from './webpack.config';
-import webpackProd      from './webpack.prod.config';
+import path                    from 'path';
+import deepAssign              from 'deep-assign';
+import customTags              from './custom-tags';
+import configureWebpack        from './configure-webpack';
 
 export default function createDefaults(config) {
-  
-  const webpackRelative = {
-    entry: path.resolve(config.basePath, './src/assets/js/index.js'),
-    output: {
-      path: path.resolve(config.basePath, './dist/assets/js')
-    }
-  };
 
-  return {
+  var webpack = configureWebpack(config);
+  console.log(webpack);
+
+  var DEFAULTS = {
   
     metadata: {
       title: 'Metalpress',
@@ -23,8 +18,6 @@ export default function createDefaults(config) {
     },
     
     filedata: false,
-    
-    prompt: false,
     
     sitemap: false,
     
@@ -120,11 +113,10 @@ export default function createDefaults(config) {
     preMiddleware: false,
     postMiddleware: false,
     
-    webpack: {
-      dev: deepAssign({}, webpackDev, webpackRelative),
-      prod: deepAssign({}, webpackProd, webpackRelative)
-    }
+    webpack
 
   };
+
+  return deepAssign({}, DEFAULTS, config);
 
 }
