@@ -36,22 +36,20 @@ export default function (config) {
         path.resolve(config.basePath, 'src/lib')
       ]
     };
-  } catch (e) { console.log(e) }
+  } catch (e) {}
 
   // jquery configuration
   try {
-    if (customWebpackDev.jquery && customWebpackProd.jquery) {
+    if (config.jquery) {
       defaultWebpackDev.externals = defaultWebpackProd.externals = {
         'jquery': 'jQuery'
       }
-      delete customWebpackDev.jquery;
-      delete customWebpackProd.jquery;
     }
   } catch (e) { console.log(e) }
 
   // plugins (bower-webpack-plugin)
   try {
-    if (customWebpackDev.bower && customWebpackProd.bower) {
+    if (config.bower) {
       if (!defaultWebpackDev.plugins || !defaultWebpackDev.plugins.length) {
         defaultWebpackDev.plugins = [];
       }
@@ -64,8 +62,6 @@ export default function (config) {
       });
       defaultWebpackDev.plugins.push(bowerConfig);
       defaultWebpackProd.plugins.push(bowerConfig);
-      delete customWebpackDev.bower;
-      delete customWebpackProd.bower;
     }
   } catch (e) { console.log(e) }
   
