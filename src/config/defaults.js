@@ -1,11 +1,14 @@
 import path                    from 'path';
 import deepAssign              from 'deep-assign';
 import customTags              from './custom-tags';
-import configureWebpack        from './configure-webpack';
+import configureWebpack, {
+  omitWebpack
+} from './configure-webpack';
 
 export default function createDefaults(config) {
 
   var webpack = configureWebpack(config);
+  var configNoWebpack = omitWebpack(config);
 
   var DEFAULTS = {
   
@@ -116,6 +119,6 @@ export default function createDefaults(config) {
 
   };
 
-  return deepAssign({}, DEFAULTS, config);
+  return deepAssign({}, DEFAULTS, configNoWebpack);
 
 }

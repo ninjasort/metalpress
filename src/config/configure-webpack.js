@@ -65,9 +65,6 @@ export default function (config) {
     }
   } catch (e) { console.log(e) }
   
-  // delete any original webpack objects
-  delete config.webpack;
-  
   // return webpack configuration
   return {
     dev: deepAssign(
@@ -84,4 +81,14 @@ export default function (config) {
     )
   };
   
+}
+
+export function omitWebpack (config) {
+  var newConfig = {};
+  for (let c in config) {
+    if (c !== 'webpack') {
+      newConfig[c] = config[c];
+    }
+  }
+  return newConfig;
 }
