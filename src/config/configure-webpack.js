@@ -45,7 +45,7 @@ export default function (config) {
         'jquery': 'jQuery'
       }
     }
-  } catch (e) { console.log(e) }
+  } catch (e) {}
 
   // plugins (bower-webpack-plugin)
   try {
@@ -63,7 +63,7 @@ export default function (config) {
       defaultWebpackDev.plugins.push(bowerConfig);
       defaultWebpackProd.plugins.push(bowerConfig);
     }
-  } catch (e) { console.log(e) }
+  } catch (e) {}
   
   // return webpack configuration
   return {
