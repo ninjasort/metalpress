@@ -68,6 +68,7 @@ export default class Serve extends SubCommand {
   }
 
   start() {
+    this.ui.writeInfo('Starting metalpress server...');
     gulp.start('watch');
   }
 
