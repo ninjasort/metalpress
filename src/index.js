@@ -24,8 +24,7 @@ import blc              from 'metalsmith-broken-link-checker';
 import date             from 'metalsmith-build-date';
 import robots           from 'metalsmith-robots';
 import shortcodes       from 'metalsmith-flexible-shortcodes';
-import diff             from 'metalsmith-differential';
-import { loadJsOrYaml } from './util/fs';
+
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
 import fingerprint      from 'metalsmith-fingerprint';
@@ -36,21 +35,14 @@ import rss              from 'metalsmith-rss';
 import drafts           from 'metalsmith-drafts';
 
 import createDefaults   from './config/defaults';
+import {
+  _fixPaginationMetadata,
+  _fixPaginationObject
+} from './helpers';
 
 export default function (config = {}, callback) {
 
   let options = createDefaults(config);
-
-  try {
-    for (var collection in config.pagination) {
-      // check every pagination collection and load metadata into the original key
-      if (typeof config.pagination[collection].pageMetadata !== 'string') {
-        break;
-      }
-      let metadata = path.resolve(config.basePath, './src', config.pagination[collection].pageMetadata);
-      config.pagination[collection].pageMetadata = loadJsOrYaml(metadata);
-    }
-  } catch(e) { console.log('could not resolve pagination metadata', e) }
 
   // Config
   // --------------------------------------------------------------------------
@@ -128,24 +120,10 @@ export default function (config = {}, callback) {
   // Pagination
   // --------------------------------------------------------------------------
   if (options.pagination) {
+    _fixPaginationMetadata(config);
     m.use(pagination(options.pagination));
+    m.use(_fixPaginationObject(config));
   }
-
-  m.use((files, m, done) => {
-    for (let file in files) {
-      if (files[file].pagination) {
-        if (files[file].collection && files[file].collection.length) {
-          let collection = files[file].collection[0];
-          let layout = config.pagination[`collections.${collection}`].layout;
-          if (config.pagination[`collections.${collection}`].pageMetadata && config.pagination[`collections.${collection}`].pageMetadata.title) {
-            files[file].title = config.pagination[`collections.${collection}`].pageMetadata.title;
-          }
-          files[file].layout = layout;
-        }
-      }
-    }
-    done();
-  });
 
   // Permalinks
   // --------------------------------------------------------------------------
@@ -232,8 +210,6 @@ export default function (config = {}, callback) {
       }
     }
   }
-
-  // m.use(diff());
 
   m.build(callback);
 
