@@ -139,9 +139,7 @@ export default function (config = {}, callback) {
   } else {
     m.use(sass(options.sass));
   }
-  m.use(autoprefixer({
-    browsers: ['last 2 versions']
-  }));
+  m.use(autoprefixer({ browsers: ['last 2 versions'] }));
 
   // Fingerprinting
   // --------------------------------------------------------------------------

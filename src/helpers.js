@@ -1,5 +1,6 @@
 import path from 'path';
-import { loadJsOrYaml } from './util/fs';
+import fs from 'fs';
+import yaml from 'js-yaml';
 
 // var loadDataFiles = () => {
 //   try {
@@ -13,7 +14,20 @@ import { loadJsOrYaml } from './util/fs';
 //     return {};
 //   }
 // };
-//
+// 
+export const loadJsOrYaml = (string) => {
+  var metadata = {};
+  if (string.indexOf('yaml') !== -1) {
+    metadata = yaml.safeLoad(
+	fs.readFileSync(string, 'utf8')
+      );
+  } else if (string.indexOf('json') !== -1) {
+    metadata = JSON.parse(
+	fs.readFileSync(string, 'utf8')
+      );
+  }
+  return metadata;
+}
 
 export function _fixPaginationQuirk(config) {
   try {
