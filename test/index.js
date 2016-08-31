@@ -98,9 +98,9 @@
 
     // });
 
-  });
+  // });
 
-  describe('production build', () => {
+  // describe('production build', () => {
 
     // it('should override global metadata when passed in config', (done) => {
     //   const m = metalpress(prodConfig, (err, files) => {
