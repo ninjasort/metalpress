@@ -12,10 +12,10 @@ export default {
   module: {
     loaders: [
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         loader: 'style!css'
       },
-      { 
+      {
         test: /\.js$/, 
         exclude: /(node_modules|src\/lib|src\/assets\/js\/lib)/,
         loader: 'babel'
@@ -24,6 +24,7 @@ export default {
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' }
     ]
   },
+
   resolveLoader: {
     root: path.join(__dirname, '../../node_modules')
   }
