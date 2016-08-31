@@ -29,36 +29,11 @@ A wrapper of Metalsmith plugins for quickly creating a blog with [Metalsmith](ht
 $ npm install metalpress --save
 ```
 
-## Usage
+## Structure and Templating
 
-To get started with metalpress, you can use the API or [CLI](https://github.com/axisdefined/metalpress-cli).
+metalpress works from a specific directory structure. It contains a `templates` and `src` directory. Within the src directory it will load data from `data` as `yaml` or `json` files. You can create folders for collections and use markdown files for pages. You should store all assets in `assets`.
 
-### API Usage
-
-metalpress taks a config object and callback. It will process the files in the config, build the site, and return a metalsmith instance. The callback will contain any errors and the file mappings.
-
-```
-import metalpress from 'metalpress';
-import config from './metalpress.config';
-
-const m = metalpress(config, (err, files) => {
-  console.log('New site build completed.');
-});
-
-```
-
-### CLI Usage
-
-#### Initialize a New Project
-
-> Prompts a series of questions and creates a new `.metalpress` config.
-
-```js
-metalpress init
-```
-
-
-Metalpress works from a specific directory structure. It contains a `templates` and `src` directory. Within the src directory it will load data from `data` as `yaml` or `json` files. You can create folders for collections and use markdown files for pages. You should store all assets in `assets`.
+For templating, metalpress uses liquid. You can learn more about the [syntax here](https://github.com/leizongmin/tinyliquid).
 
 Here's an example structure:
 
@@ -85,6 +60,41 @@ Here's an example structure:
 │       ├── footer.liquid
 │   └── _layouts
 │       ├── home.liquid
+```
+
+
+## Usage
+
+To get started with metalpress, you can use the API or [CLI](https://github.com/axisdefined/metalpress-cli).
+
+### API Usage
+
+metalpress taks a [config](https://github.com/axisdefined/metalpress/wiki/Default-Config) object and callback. It will process the files in the config, build the site, and return a metalsmith instance. The callback will contain any errors and the file mappings.
+
+```
+import metalpress from 'metalpress';
+import config from './metalpress.config';
+
+const m = metalpress(config, (err, files) => {
+  console.log('New site build completed.');
+});
+
+```
+
+### CLI Usage
+
+#### Install CLI
+
+```sh
+npm install metalpress-cli
+```
+
+#### Initialize a New Project
+
+> Prompts a series of questions and creates a new `.metalpress` config.
+
+```sh
+metalpress init
 ```
 
 #### Start a Browser-sync Server
