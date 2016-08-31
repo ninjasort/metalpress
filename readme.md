@@ -145,6 +145,6 @@ If you need to do so, you can override webpack with a custom config. For example
 }
 ```
 
-- For Questions, Issues, PRs please refer to [@cameronroe](http://github.com/cameronroe)
+For Questions, Issues, PRs please refer to [@cameronroe](http://github.com/cameronroe)
 
 [MIT LICENSE](/LICENSE)
