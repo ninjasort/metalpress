@@ -13,6 +13,14 @@
       "stage-0"
     ]
   },
+  "keywords": [
+    "static site",
+    "liquid",
+    "node",
+    "website",
+    "metalsmith",
+    "metalpress"
+  ],
   "scripts": {
     "lint": "eslint --ext .js,.jsx .",
     "lint:fix": "eslint --fix --ext .js,.jsx .",
