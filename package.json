@@ -24,13 +24,6 @@
     "build": "babel src -d lib",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
-  "bin": {
-    "metalpress": "bin/metalpress.js",
-    "metalpress-init": "bin/metalpress-init.js",
-    "metalpress-new": "bin/metalpress-new.js",
-    "metalpress-serve": "bin/metalpress-serve.js",
-    "metalpress-deploy": "bin/metalpress-deploy.js"
-  },
   "dependencies": {
     "babel-cli": "6.11.4",
     "babel-core": "6.14.0",
@@ -83,7 +76,8 @@
     "script-loader": "0.7.0",
     "style-loader": "0.13.1",
     "tinyliquid": "0.2.33",
-    "url-loader": "0.5.7"
+    "url-loader": "0.5.7",
+    "webpack": "1.13.2"
   },
   "devDependencies": {
     "assert-dir-equal": "1.0.1",

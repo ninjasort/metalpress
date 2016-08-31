@@ -12,10 +12,10 @@ export default {
   module: {
     loaders: [
       {
-	test: /\.scss$/
-        loader: 'style!css'
+	test: /\.scss$/,
+	loader: 'style!css'
       },
-      { 
+      {
         test: /\.js$/, 
         exclude: /(node_modules|src\/lib|src\/assets\/js\/lib)/,
         loader: 'babel'
