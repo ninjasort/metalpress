@@ -12,8 +12,8 @@ export default {
   module: {
     loaders: [
       {
-	test: /\.scss$/,
-	loader: 'style!css'
+        test: /\.scss$/,
+        loader: 'style!css'
       },
       {
         test: /\.js$/, 

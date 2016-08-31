@@ -10,7 +10,7 @@ export default {
   module: {
     loaders: [
       {
-	test: /\.scss$/,
+        test: /\.scss$/,
         loader: 'style!css'
       },
       { 
