@@ -25,7 +25,7 @@ A wrapper of Metalsmith plugins for quickly creating a blog with [Metalsmith](ht
 
 ## Installation
 
-```
+```sh
 $ npm install metalpress --save
 ```
 
@@ -71,7 +71,7 @@ To get started with metalpress, you can use the API or [CLI](https://github.com/
 
 metalpress taks a [config](https://github.com/axisdefined/metalpress/wiki/Default-Config) object and callback. It will process the files in the config, build the site, and return a metalsmith instance. The callback will contain any errors and the file mappings.
 
-```
+```js
 import metalpress from 'metalpress';
 import config from './metalpress.config';
 
@@ -86,7 +86,7 @@ const m = metalpress(config, (err, files) => {
 #### Install CLI
 
 ```sh
-npm install metalpress-cli
+npm install metalpress-cli -g
 ```
 
 #### Initialize a New Project
@@ -101,7 +101,7 @@ metalpress init
 
 > Serve the project on automatically assigned browser-sync port. (default: http://localhost:3000)
 
-```
+```sh
 metalpress serve
 ```
 
@@ -121,12 +121,12 @@ To deploy your site, you'll need to have your `aws.json` set up. It includes:
 > Deploy a `dist` and deployed to AWS S3.
 
 *Staging*
-```
+```sh
 metalpress deploy
 ```
 
 *Production*
-```
+```sh
 metalpress deploy -p
 ```
 
@@ -136,7 +136,7 @@ By default, metalpress uses a webpack configuration for both staging and product
 
 If you need to do so, you can override webpack with a custom config. For example, you can use the following options in your .metalpress config. You can add only the parameters you need which will be extended into the defaults, or override the entire file as needed.
 
-```
+```json
 {
   "webpack": {
     "dev": "./webpack.config.js",
