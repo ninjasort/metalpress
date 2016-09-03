@@ -36,7 +36,7 @@ import drafts           from 'metalsmith-drafts';
 
 import createDefaults   from './config/defaults';
 import {
-  _fixPaginationMetadata,
+  _fixPaginationQuirk,
   _fixPaginationObject
 } from './helpers';
 
@@ -120,7 +120,7 @@ export default function (config = {}, callback) {
   // Pagination
   // --------------------------------------------------------------------------
   if (options.pagination) {
-    _fixPaginationMetadata(config);
+    _fixPaginationQuirk(config);
     m.use(pagination(options.pagination));
     m.use(_fixPaginationObject(config));
   }
