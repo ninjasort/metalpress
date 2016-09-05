@@ -30,7 +30,9 @@ import htmlMinifier     from 'metalsmith-html-minifier';
 import fingerprint      from 'metalsmith-fingerprint';
 import imagemin         from 'metalsmith-imagemin';
 import sitemap          from 'metalsmith-sitemap';
-import firebase         from 'metalsmith-firebase';
+import firebase, {
+  transform
+} from 'metalsmith-firebase';
 import rss              from 'metalsmith-rss';
 import drafts           from 'metalsmith-drafts';
 
@@ -75,6 +77,7 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   if (options.firebase) {
     m.use(firebase(options.firebase));
+    m.use(transform(options.firebase));
   }
 
   // Ignores

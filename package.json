@@ -57,7 +57,7 @@
     "metalsmith-drafts": "0.0.1",
     "metalsmith-excerpts": "1.1.0",
     "metalsmith-fingerprint": "1.0.3",
-    "metalsmith-firebase": "0.5.0",
+    "metalsmith-firebase": "0.6.0",
     "metalsmith-flexible-shortcodes": "1.0.0",
     "metalsmith-html-minifier": "2.1.0",
     "metalsmith-ignore": "0.1.2",
