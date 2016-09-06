@@ -10,7 +10,7 @@ import fs from 'fs';
 import defaultWebpackDev from './webpack.config';
 import defaultWebpackProd from './webpack.prod.config';
 import BowerWebpackPlugin from 'bower-webpack-plugin';
-// import deepAssign from 'deep-assign';
+import deepAssign from 'deep-assign';
 import UI from '../models/ui';
 
 function loadCustomWebpack(ui, config) {
