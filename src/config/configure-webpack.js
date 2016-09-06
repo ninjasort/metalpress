@@ -97,13 +97,13 @@ export default function (config) {
   
   // return webpack configuration
   return {
-    dev: deepAssign(
+    dev: Object.assign(
       {}, 
       defaultWebpackDev,
       bundle,
       customWebpack.dev
     ),
-    prod: deepAssign(
+    prod: Object.assign(
       {}, 
       defaultWebpackProd,
       bundle,
