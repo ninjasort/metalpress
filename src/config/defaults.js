@@ -13,9 +13,6 @@ export default function createDefaults(config) {
   var DEFAULTS = {
   
     metadata: {
-      title: 'Metalpress',
-      description: 'Create a blog with Metalpress.',
-      url: 'https://metalpress.io',
       production: false
     },
     
