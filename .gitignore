@@ -29,7 +29,6 @@ docs/
 dist/
 
 # Build files
-lib/
 umd/
 
 .nyc_output
