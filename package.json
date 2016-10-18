@@ -87,22 +87,11 @@
     "webpack": "1.13.2"
   },
   "devDependencies": {
-    "assert-dir-equal": "1.0.1",
     "babel-cli": "6.14.0",
     "babel-core": "6.14.0",
     "babel-eslint": "6.1.2",
     "babel-preset-es2015": "6.14.0",
     "babel-preset-stage-0": "6.5.0",
-    "babel-register": "6.14.0",
-    "chai": "3.5.0",
-    "codecov": "1.0.1",
-    "eslint": "3.4.0",
-    "eslint-config-airbnb": "10.0.1",
-    "eslint-plugin-import": "1.14.0",
-    "mocha": "3.x",
-    "nyc": "8.1.0",
-    "rimraf": "2.5.4",
-    "semantic-release": "^4.3.5",
-    "sinon": "1.17.5"
+    "babel-register": "6.14.0"
   }
 }
