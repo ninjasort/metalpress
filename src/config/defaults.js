@@ -11,24 +11,22 @@ export default function createDefaults(config) {
   var configNoWebpack = omitWebpack(config);
 
   var DEFAULTS = {
-  
+
     metadata: {
       production: false
     },
-    
+
     filedata: false,
-    
+
     sitemap: false,
-    
-    shortcodes: false,
-    
+
     rss: false,
 
     robots: {
       'disallow': ['404.html', '/assets/img'],
       'sitemap': 'https://metalpress.io/sitemap.xml'
     },
-    
+
     ignore: [
       'data/**',
       '_data/**',
@@ -40,33 +38,33 @@ export default function createDefaults(config) {
       'lib/**/.jshintrc',
       'assets/js/**/!(.min).js'
     ],
-    
+
     markdown: {
       gfm: true,
       tables: true
     },
-    
+
     permalinks: {
       relative: false
     },
-    
+
     layouts: {
       engine: 'liquid',
       directory: 'templates/_layouts',
       includeDir: 'templates/_includes',
       filters: customTags
     },
-    
+
     inPlace: {
       engine: 'liquid',
       pattern: '**/*.liquid',
       includeDir: 'templates/_includes'
     },
-    
+
     fingerprint: {
       pattern: 'assets/css/main.css'
     },
-    
+
     tags: {
       // yaml key for tag list in you pages
       handle: 'tags',
@@ -88,30 +86,30 @@ export default function createDefaults(config) {
         mode: 'rfc3986'
       }
     },
-    
+
     excerpts: {
       pruneLength: 80
     },
-    
+
     sass: {
       outputDir: 'assets/css',
       sourceMap: true,
       sourceMapEmbed: true
     },
-    
+
     imagemin: {
       optimizationLevel: 4,
       progressive: true
     },
-    
+
     htmlMinifier: {
       removeComments: false,
       removeEmptyAttributes: false
     },
-    
+
     preMiddleware: false,
     postMiddleware: false,
-    
+
     webpack
 
   };
