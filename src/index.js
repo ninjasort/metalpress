@@ -31,7 +31,6 @@ import fingerprint      from 'metalsmith-fingerprint';
 import imagemin         from 'metalsmith-imagemin';
 import sitemap          from 'metalsmith-sitemap';
 import rss              from 'metalsmith-rss';
-import drafts           from 'metalsmith-drafts';
 
 import createDefaults   from './config/defaults';
 import {
@@ -70,12 +69,6 @@ export default function (config = {}, callback) {
   // Ignores
   // --------------------------------------------------------------------------
   m.use(ignore(options.ignore));
-
-  // Drafts
-  // --------------------------------------------------------------------------
-  if (m.metadata().production) {
-    m.use(drafts());
-  }
 
   // Definitions
   // --------------------------------------------------------------------------
