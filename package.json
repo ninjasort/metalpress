@@ -23,15 +23,7 @@
     "metalpress"
   ],
   "scripts": {
-    "lint": "eslint --ext .js,.jsx .",
-    "lint:fix": "eslint --fix --ext .js,.jsx .",
-    "test": "mocha --recursive --compilers js:babel-register",
-    "test:watch": "npm t -- -w",
-    "cover": "nyc npm t -r lcov",
-    "check-coverage": "nyc check-coverage --lines 95 --functions 95 --branches 95",
-    "report-coverage": "codecov -t 759de1b3-35e5-4742-a96e-3d6d37d6f4bd",
-    "build": "babel src -d lib",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "build": "babel src -d lib"
   },
   "dependencies": {
     "babel-cli": "6.14.0",
