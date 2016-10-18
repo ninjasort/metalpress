@@ -24,14 +24,12 @@ import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
 import date             from 'metalsmith-build-date';
 import robots           from 'metalsmith-robots';
-import shortcodes       from 'metalsmith-flexible-shortcodes';
 
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
 import fingerprint      from 'metalsmith-fingerprint';
 import imagemin         from 'metalsmith-imagemin';
 import sitemap          from 'metalsmith-sitemap';
-import firebase, {transform} from 'metalsmith-firebase';
 import rss              from 'metalsmith-rss';
 import drafts           from 'metalsmith-drafts';
 
@@ -65,22 +63,9 @@ export default function (config = {}, callback) {
   // Add env variables to metadata
   m.use(env());
 
-  // Shortcodes
-  // --------------------------------------------------------------------------
-  if (options.shortcodes) {
-    m.use(shortcodes(options.shortcodes));
-  }
-
   // Build Date
   // --------------------------------------------------------------------------
   m.use(date({ key: 'dateBuilt' }));
-
-  // Firebase
-  // --------------------------------------------------------------------------
-  if (options.firebase) {
-    m.use(firebase(options.firebase));
-    m.use(transform(options.firebase));
-  }
 
   // Ignores
   // --------------------------------------------------------------------------
