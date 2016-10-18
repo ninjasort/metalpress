@@ -56,6 +56,7 @@
     "metalsmith-collections": "0.7.0",
     "metalsmith-define": "2.0.1",
     "metalsmith-drafts": "0.0.1",
+    "metalsmith-env": "^2.0.0",
     "metalsmith-excerpts": "1.1.0",
     "metalsmith-fingerprint": "1.0.3",
     "metalsmith-firebase": "0.6.1",

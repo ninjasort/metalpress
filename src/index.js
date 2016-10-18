@@ -2,6 +2,7 @@ import path             from 'path';
 import fs               from 'fs';
 import Metalsmith       from 'metalsmith';
 import deepAssign       from 'deep-assign';
+import env              from 'metalsmith-env';
 import collections      from 'metalsmith-collections';
 import metadata         from 'metalsmith-metadata';
 import markdown         from 'metalsmith-markdown';
@@ -60,7 +61,10 @@ export default function (config = {}, callback) {
   // File Metadata
   // --------------------------------------------------------------------------
   m.use(metadata(options.filedata));
-  
+
+  // Add env variables to metadata
+  m.use(env());
+
   // Shortcodes
   // --------------------------------------------------------------------------
   if (options.shortcodes) {
@@ -117,7 +121,7 @@ export default function (config = {}, callback) {
   // Attach Collections
   // --------------------------------------------------------------------------
   m.use(collections(options.collections));
-  
+
   // Pagination
   // --------------------------------------------------------------------------
   if (options.pagination) {
