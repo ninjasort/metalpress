@@ -75,7 +75,7 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   if (options.firebase) {
     m.use(firebase(options.firebase));
-    m.use(transform(options.firebase));
+    m.use(transform(options.firebase.options));
   }
 
   // Ignores
