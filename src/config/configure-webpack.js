@@ -11,9 +11,8 @@ import defaultWebpackDev from './webpack.config';
 import defaultWebpackProd from './webpack.prod.config';
 import BowerWebpackPlugin from 'bower-webpack-plugin';
 import deepAssign from 'deep-assign';
-import UI from '../models/ui';
 
-function loadCustomWebpack(ui, config) {
+function loadCustomWebpack(config) {
   const custom = {};
   try {
     // attempt to load custom config
@@ -31,38 +30,36 @@ function loadCustomWebpack(ui, config) {
         path.resolve(config.basePath, 'src/lib')
       ]
     };
-    
-    ui.writeInfo('Using custom webpack config...');
+
+    console.log('\t Info: Using custom webpack config...');
 
     return custom;
   } catch (e) {
-    ui.writeError(`Could not load custom webpack config. ${e}`);
+    console.error(`Could not load custom webpack config. ${e}`);
     if (!config.webpack.dev) {
-      ui.writeError(`Did not specify path to 'webpack.dev'.`);
+      console.error(`Did not specify path to 'webpack.dev'.`);
     }
     if (!config.webpack.prod) {
-      ui.writeError(`Did not specify path to 'webpack.prod'.`);
+      console.error(`Did not specify path to 'webpack.prod'.`);
     }
     return {};
   }
 }
 
 export default function (config) {
-  
-  const ui = new UI();
   var bundle = {
     entry: path.resolve(config.basePath, './src/assets/js/index.js'),
     output: {
       path: path.resolve(config.basePath, './dist/assets/js')
     }
   };
-  
+
   // attempt custom webpack config
   var customWebpack = {};
   if (config.webpack) {
-    customWebpack = loadCustomWebpack(ui, config);
+    customWebpack = loadCustomWebpack(config);
   } else {
-    ui.writeInfo('Using metalpress default webpack config...');
+    console.log('\t Info: Using metalpress default webpack config...');
   }
 
   // jquery configuration
@@ -70,8 +67,8 @@ export default function (config) {
     defaultWebpackDev.externals = defaultWebpackProd.externals = {
       'jquery': 'jQuery'
     }
-    
-    ui.writeInfo('Using jQuery from external source entry...');
+
+    console.log('\t Info: Using jQuery from external source entry...');
   }
 
   // plugins (bower-webpack-plugin)
@@ -91,26 +88,26 @@ export default function (config) {
       defaultWebpackDev.plugins.push(bowerConfig);
       defaultWebpackProd.plugins.push(bowerConfig);
 
-      ui.writeInfo('Using bower packages from "src/lib" specified in bower.json...');
-    } catch (e) { ui.writeError(e) }
+      console.log('\t Info: Using bower packages from "src/lib" specified in bower.json...');
+    } catch (e) { console.error(e) }
   }
-  
+
   // return webpack configuration
   return {
     dev: Object.assign(
-      {}, 
+      {},
       defaultWebpackDev,
       bundle,
       customWebpack.dev
     ),
     prod: Object.assign(
-      {}, 
+      {},
       defaultWebpackProd,
       bundle,
       customWebpack.prod
     )
   };
-  
+
 }
 
 export function omitWebpack (config) {
