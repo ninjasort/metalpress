@@ -2,6 +2,7 @@ import path             from 'path';
 import fs               from 'fs';
 import Metalsmith       from 'metalsmith';
 import deepAssign       from 'deep-assign';
+import env              from 'metalsmith-env';
 import collections      from 'metalsmith-collections';
 import metadata         from 'metalsmith-metadata';
 import markdown         from 'metalsmith-markdown';
@@ -23,16 +24,13 @@ import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
 import date             from 'metalsmith-build-date';
 import robots           from 'metalsmith-robots';
-import shortcodes       from 'metalsmith-flexible-shortcodes';
 
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
 import fingerprint      from 'metalsmith-fingerprint';
 import imagemin         from 'metalsmith-imagemin';
 import sitemap          from 'metalsmith-sitemap';
-import firebase, {transform} from 'metalsmith-firebase';
 import rss              from 'metalsmith-rss';
-import drafts           from 'metalsmith-drafts';
 
 import createDefaults   from './config/defaults';
 import {
@@ -60,33 +58,17 @@ export default function (config = {}, callback) {
   // File Metadata
   // --------------------------------------------------------------------------
   m.use(metadata(options.filedata));
-  
-  // Shortcodes
-  // --------------------------------------------------------------------------
-  if (options.shortcodes) {
-    m.use(shortcodes(options.shortcodes));
-  }
+
+  // Add env variables to metadata
+  m.use(env());
 
   // Build Date
   // --------------------------------------------------------------------------
   m.use(date({ key: 'dateBuilt' }));
 
-  // Firebase
-  // --------------------------------------------------------------------------
-  if (options.firebase) {
-    m.use(firebase(options.firebase));
-    m.use(transform(options.firebase));
-  }
-
   // Ignores
   // --------------------------------------------------------------------------
   m.use(ignore(options.ignore));
-
-  // Drafts
-  // --------------------------------------------------------------------------
-  if (m.metadata().production) {
-    m.use(drafts());
-  }
 
   // Definitions
   // --------------------------------------------------------------------------
@@ -117,7 +99,7 @@ export default function (config = {}, callback) {
   // Attach Collections
   // --------------------------------------------------------------------------
   m.use(collections(options.collections));
-  
+
   // Pagination
   // --------------------------------------------------------------------------
   if (options.pagination) {
