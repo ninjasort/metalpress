@@ -18,7 +18,6 @@ A wrapper of Metalsmith plugins for quickly creating a blog with [Metalsmith](ht
 - Imagemin, Code Highlighting, Html Minification
 - robots.txt
 - Post Features
-  - Shortcodes
   - Excerpts
   - Tags
   - Drafts
