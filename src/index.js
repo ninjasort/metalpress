@@ -23,7 +23,7 @@ import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
 import date             from 'metalsmith-build-date';
 import robots           from 'metalsmith-robots';
-import shortcodes       from 'metalsmith-flexible-shortcodes';
+// import shortcodes       from 'metalsmith-flexible-shortcodes';
 
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
@@ -63,9 +63,9 @@ export default function (config = {}, callback) {
   
   // Shortcodes
   // --------------------------------------------------------------------------
-  if (options.shortcodes) {
-    m.use(shortcodes(options.shortcodes));
-  }
+  // if (options.shortcodes) {
+  //   m.use(shortcodes(options.shortcodes));
+  // }
 
   // Build Date
   // --------------------------------------------------------------------------
