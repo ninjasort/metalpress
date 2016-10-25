@@ -3,7 +3,7 @@
   "basePath": ".",
 
   "filedata": {
-    "site": "_data/config.yaml"
+    "site": "data/config.yaml"
   },
 
   "firebase": {
@@ -45,4 +45,4 @@
     "hostname": "http://testsite.com"
   }
 
-};
+}

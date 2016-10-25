@@ -23,7 +23,6 @@ import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
 import date             from 'metalsmith-build-date';
 import robots           from 'metalsmith-robots';
-import shortcodes       from 'metalsmith-flexible-shortcodes';
 
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
@@ -60,12 +59,6 @@ export default function (config = {}, callback) {
   // File Metadata
   // --------------------------------------------------------------------------
   m.use(metadata(options.filedata));
-  
-  // Shortcodes
-  // --------------------------------------------------------------------------
-  if (options.shortcodes) {
-    m.use(shortcodes(options.shortcodes));
-  }
 
   // Build Date
   // --------------------------------------------------------------------------
@@ -75,7 +68,7 @@ export default function (config = {}, callback) {
   // --------------------------------------------------------------------------
   if (options.firebase) {
     m.use(firebase(options.firebase));
-    m.use(transform(options.firebase));
+    m.use(transform(options.firebase.options));
   }
 
   // Ignores
