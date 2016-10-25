@@ -6,7 +6,7 @@ cache:
 notifications:
   email: false
 node_js:
-  - '4'
+  - node
 before_install:
   - npm i -g npm@^2.15.8
 before_script:
@@ -17,7 +17,7 @@ before_script:
   - npm run build
 after_success:
   - npm run report-coverage
-  - npm run semantic-release
+  # - npm run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

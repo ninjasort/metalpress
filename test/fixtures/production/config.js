@@ -57,10 +57,6 @@ export default {
 
   sitemap: {
     hostname: 'http://testsite.com'
-  },
-
-  webpack: {
-    prod: webpackProdConfig
   }
 
 };

@@ -11,14 +11,20 @@ import defaultWebpackDev from './webpack.config';
 import defaultWebpackProd from './webpack.prod.config';
 import BowerWebpackPlugin from 'bower-webpack-plugin';
 import deepAssign from 'deep-assign';
-import UI from '../models/ui';
 
-function loadCustomWebpack(ui, config) {
+export function loadCustomWebpack(config) {
   const custom = {};
   try {
+
     // attempt to load custom config
-    custom.dev = require(path.resolve(config.basePath, config.webpack.dev)).default;
-    custom.prod = require(path.resolve(config.basePath, config.webpack.prod)).default;
+    custom.dev = require(path.resolve(config.basePath, config.webpack.dev));
+    if (custom.dev.default) {
+      custom.dev = custom.dev.default;
+    }
+    custom.prod = require(path.resolve(config.basePath, config.webpack.prod));
+    if (custom.prod.default) {
+      custom.prod = custom.prod.default;
+    }
     custom.dev.resolve = {
       root: [
         path.resolve(config.basePath, 'node_modules'),
@@ -31,25 +37,31 @@ function loadCustomWebpack(ui, config) {
         path.resolve(config.basePath, 'src/lib')
       ]
     };
-    
-    ui.writeInfo('Using custom webpack config...');
-
     return custom;
+
   } catch (e) {
-    ui.writeError(`Could not load custom webpack config. ${e}`);
+    
+    if (!config.webpack) {
+      throw new Error(`Could not load custom webpack config. ${e}`);
+      return {};
+    }
     if (!config.webpack.dev) {
-      ui.writeError(`Did not specify path to 'webpack.dev'.`);
+      console.log(`Did not specify path to 'webpack.dev'.`);
     }
     if (!config.webpack.prod) {
-      ui.writeError(`Did not specify path to 'webpack.prod'.`);
+      console.log(`Did not specify path to 'webpack.prod'.`);
     }
     return {};
+
   }
 }
 
 export default function (config) {
   
-  const ui = new UI();
+  if (!config.basePath) {
+    throw new Error('Did not define config.basePath');
+  }
+
   var bundle = {
     entry: path.resolve(config.basePath, './src/assets/js/index.js'),
     output: {
@@ -60,9 +72,7 @@ export default function (config) {
   // attempt custom webpack config
   var customWebpack = {};
   if (config.webpack) {
-    customWebpack = loadCustomWebpack(ui, config);
-  } else {
-    ui.writeInfo('Using metalpress default webpack config...');
+    customWebpack = loadCustomWebpack(config);
   }
 
   // jquery configuration
@@ -70,8 +80,6 @@ export default function (config) {
     defaultWebpackDev.externals = defaultWebpackProd.externals = {
       'jquery': 'jQuery'
     }
-    
-    ui.writeInfo('Using jQuery from external source entry...');
   }
 
   // plugins (bower-webpack-plugin)
@@ -90,9 +98,7 @@ export default function (config) {
       });
       defaultWebpackDev.plugins.push(bowerConfig);
       defaultWebpackProd.plugins.push(bowerConfig);
-
-      ui.writeInfo('Using bower packages from "src/lib" specified in bower.json...');
-    } catch (e) { ui.writeError(e) }
+    } catch (e) { throw new Error(e); }
   }
   
   // return webpack configuration
