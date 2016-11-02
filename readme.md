@@ -12,7 +12,7 @@ A wrapper of Metalsmith plugins for quickly creating a blog with [Metalsmith](ht
 - Pagination
 - Firebase Data Integration
 - Webpack Bundling
-- Use Bower/NPM Packages
+- Use NPM Modules
 - SASS Compiling and CSS Fingerprinting
 - RSS & Sitemap Support
 - Imagemin, Code Highlighting, Html Minification
@@ -131,7 +131,7 @@ metalpress deploy -p
 
 ### Webpack Usage
 
-By default, metalpress uses a webpack configuration for both staging and production environments. Within your config, you can specify `bower: true`, `jquery: true` for included support of bower and npm packages.
+By default, metalpress uses a webpack configuration for both staging and production environments. Within your config, you can specify `jquery: true` for included support jquery.
 
 If you need to do so, you can override webpack with a custom config. For example, you can use the following options in your .metalpress config. You can add only the parameters you need which will be extended into the defaults, or override the entire file as needed.
 
