@@ -1,6 +1,6 @@
 require("babel-register", {
   presets: [
-    'es2015',
+    'latest',
     'stage-0'
   ]
 });
@@ -9,7 +9,6 @@ import path from 'path';
 import fs from 'fs';
 import defaultWebpackDev from './webpack.config';
 import defaultWebpackProd from './webpack.prod.config';
-import BowerWebpackPlugin from 'bower-webpack-plugin';
 import deepAssign from 'deep-assign';
 
 export function loadCustomWebpack(config) {
@@ -80,25 +79,6 @@ export default function (config) {
     defaultWebpackDev.externals = defaultWebpackProd.externals = {
       'jquery': 'jQuery'
     }
-  }
-
-  // plugins (bower-webpack-plugin)
-  if (config.bower) {
-    try {
-
-      if (!defaultWebpackDev.plugins || !defaultWebpackDev.plugins.length) {
-        defaultWebpackDev.plugins = [];
-      }
-      if (!defaultWebpackProd.plugins || !defaultWebpackProd.plugins.length) {
-        defaultWebpackProd.plugins = [];
-      }
-      var bowerConfig = new BowerWebpackPlugin({
-        modulesDirectories: ['src/lib'],
-        manifestFiles: 'bower.json'
-      });
-      defaultWebpackDev.plugins.push(bowerConfig);
-      defaultWebpackProd.plugins.push(bowerConfig);
-    } catch (e) { throw new Error(e); }
   }
   
   // return webpack configuration

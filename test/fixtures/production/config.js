@@ -16,10 +16,6 @@ export default {
     site: '_data/config.yaml'
   },
 
-  firebase: {
-    url: 'https://axisdefined.firebaseio.com'
-  },
-
   fingerprint: {
     pattern: 'assets/css/main.css'
   },

@@ -6,10 +6,6 @@
     "site": "data/config.yaml"
   },
 
-  "firebase": {
-    "url": "https://axisdefined.firebaseio.com"
-  },
-
   "collections": {
     "pages": {
       "pattern": "pages/*.html"

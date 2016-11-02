@@ -1,6 +1,5 @@
 import path from 'path';
 import webpack from 'webpack';
-import BowerWebpackPlugin from 'bower-webpack-plugin';
 
 module.exports = {
   entry: path.resolve(__dirname, './src/assets/js/index.js'),
@@ -16,7 +15,7 @@ module.exports = {
         exclude: /(node_modules|src\/lib|src\/assets\/js\/lib)/, 
         loader: 'babel',
         query: {
-          presets: ['es2015']
+          presets: ['latest']
         }
       }
     ]
@@ -25,10 +24,6 @@ module.exports = {
     'jquery': 'jQuery'
   },
   plugins: [
-    new BowerWebpackPlugin({
-      modulesDirectories: ['src/lib'],
-      manifestFiles: 'bower.json'
-    }),
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
       compress: {
@@ -40,9 +35,5 @@ module.exports = {
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin()
-  ],
-  devServer: {
-    quiet: true,
-    noInfo: true
-  }
+  ]
 };

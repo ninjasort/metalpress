@@ -36,7 +36,6 @@ describe('webpack configuration', () => {
     it('should keep original module.loaders in tact', () => {
       var config = configureWebpack({
         basePath: path.resolve(__dirname, '../fixtures'),
-        bower: true,
         jquery: true
       })
       expect(config.dev.module.loaders).to.have.lengthOf(4)
