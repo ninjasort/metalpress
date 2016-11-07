@@ -23,6 +23,7 @@ import snippet          from 'metalsmith-snippet';
 import blc              from 'metalsmith-broken-link-checker';
 import date             from 'metalsmith-build-date';
 import robots           from 'metalsmith-robots';
+import contentful       from 'contentful-metalsmith';
 
 // prod
 import htmlMinifier     from 'metalsmith-html-minifier';
@@ -63,12 +64,27 @@ export default function (config = {}, callback) {
   // Build Date
   // --------------------------------------------------------------------------
   m.use(date({ key: 'dateBuilt' }));
-
+  
   // Firebase
   // --------------------------------------------------------------------------
   if (options.firebase) {
     m.use(firebase(options.firebase));
     m.use(transform(options.firebase.options));
+  }
+
+  // Contentful
+  // --------------------------------------------------------------------------
+  if (options.contentful) {
+    m.use(contentful(options.contentful));
+    m.use((files, m, next) => {
+      for(const file in files) {
+        try {
+          let data = files[file].data.fields.content;
+          files[file].contents = Buffer.from(data, 'utf8');
+        } catch (e) { /* skip file */ }
+      }
+      next();
+    })
   }
 
   // Ignores
