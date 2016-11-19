@@ -9,9 +9,12 @@ export default function createDefaults(config) {
   
   let webpack = configureWebpack(config);
   let configNoWebpack = omitWebpack(config);
+  
+  const basePath = path.resolve(process.cwd(), config.basePath)
 
   let DEFAULTS = {
     metadata: {
+      basePath,
       production: false
     },
     filedata: false,

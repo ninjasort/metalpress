@@ -10,12 +10,17 @@
   "main": "lib/index.js",
   "babel": {
     "presets": [
-      "es2015",
+      "latest",
       "stage-0"
     ]
   },
   "ava": {
-    "require": ["babel-register"],
+    "files": [
+        "test/*.ava.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
     "babel": "inherit"
   },
   "keywords": [
@@ -29,9 +34,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.jsx .",
     "lint:fix": "eslint --fix --ext .js,.jsx .",
-    "test": "mocha $(find test -name '*.test.js') --recursive --compilers js:babel-register",
+    "test": "nyc ava",
     "test:watch": "npm t -- -w",
-    "test:ava": "nyc ava **/*.ava.js",
     "cover": "nyc npm t -r lcov",
     "check-coverage": "nyc check-coverage --lines 95 --functions 95 --branches 95",
     "report-coverage": "nyc report --reporter=text-lcov > coverage/coverage.lcov && codecov -t 759de1b3-35e5-4742-a96e-3d6d37d6f4bd",
@@ -40,9 +44,9 @@
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "dependencies": {
-    "babel-loader": "6.2.7",
+    "babel-loader": "6.2.8",
     "contentful-metalsmith": "0.7.0",
-    "css-loader": "0.25.0",
+    "css-loader": "0.26.0",
     "deep-assign": "2.0.0",
     "file-loader": "0.9.0",
     "imports-loader": "0.6.5",
@@ -75,9 +79,8 @@
     "metalsmith-sitemap": "1.1.0",
     "metalsmith-snippet": "2.0.0",
     "metalsmith-tags": "2.0.0",
-    "metalsmith-webpack": "1.0.3",
-    "mocha": "3.1.2",
-    "moment": "2.15.2",
+    "metalsmith-webpack": "git+https://github.com/cameronroe/metalsmith-webpack.git",
+    "moment": "2.16.0",
     "raw-loader": "0.5.1",
     "rimraf": "2.5.4",
     "script-loader": "0.7.0",
@@ -88,23 +91,21 @@
   },
   "devDependencies": {
     "assert-dir-equal": "1.0.1",
-    "ava": "^0.16.0",
+    "ava": "^0.17.0",
     "babel-cli": "6.18.0",
     "babel-core": "6.18.2",
-    "babel-eslint": "7.1.0",
+    "babel-eslint": "7.1.1",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-stage-0": "6.16.0",
     "babel-register": "6.18.0",
-    "chai": "3.5.0",
     "codecov": "1.0.1",
-    "eslint": "3.9.1",
-    "eslint-config-airbnb": "12.0.0",
-    "eslint-plugin-import": "2.1.0",
-    "mocha": "3.x",
-    "nyc": "8.4.0",
+    "eslint": "3.10.2",
+    "eslint-config-airbnb": "13.0.0",
+    "eslint-plugin-import": "2.2.0",
+    "nyc": "9.0.1",
     "pmock": "0.2.3",
     "rimraf": "2.5.4",
-    "semantic-release": "^4.3.5",
+    "semantic-release": "^6.3.2",
     "sinon": "1.17.6"
   }
 }
