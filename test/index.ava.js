@@ -30,7 +30,7 @@ test.cb('metalpress overrides metadata when passing it in', t => {
 
 test.cb('metalpress basePath should resolve to an absolute path internally', t => {
   const m = metalpress(standardConfig, (err) => {
-    const match = new RegExp(/\/Users\//)
+    const match = new RegExp(/\/metalpress\/test\//)
     t.truthy(m.metadata().basePath)
     t.regex(m.metadata().basePath, match, 'is a absolute path')
     t.end()
