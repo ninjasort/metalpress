@@ -83,10 +83,11 @@
   },
   "devDependencies": {
     "assert-dir-equal": "1.0.1",
+    "ava": "^0.16.0",
     "babel-cli": "6.18.0",
     "babel-core": "6.18.2",
     "babel-eslint": "7.1.0",
-    "babel-preset-latest": "6.16.0",
+    "babel-preset-latest": "^6.16.0",
     "babel-preset-stage-0": "6.16.0",
     "babel-register": "6.18.0",
     "chai": "3.5.0",
