@@ -1,13 +1,13 @@
-import { expect } from 'chai';
-import sinon from 'sinon';
-import fs from 'fs';
-import path from 'path';
-import rimraf from 'rimraf';
-import metalpress from '../src';
-import prodConfig from './fixtures/production/config';
-import equal from 'assert-dir-equal';
-import assign from 'deep-assign';
-import pmock from 'pmock';
+import { expect } from 'chai'
+import sinon from 'sinon'
+import fs from 'fs'
+import path from 'path'
+import rimraf from 'rimraf'
+import metalpress from '../src'
+import prodConfig from './fixtures/production/config'
+import equal from 'assert-dir-equal'
+import assign from 'deep-assign'
+import pmock from 'pmock'
 
 describe('metalpress', () => {
 
