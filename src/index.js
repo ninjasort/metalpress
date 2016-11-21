@@ -174,13 +174,14 @@ export default function (config = {}, callback) {
   m.use(layouts(options.layouts))
   m.use(inPlace(options.inPlace))
 
-  // Js
+  // Webpack
+  // 
   // --------------------------------------------------------------------------
   if (options.webpack) {
     if (m.metadata().production) {
-      m.use(webpack(options.webpack.prod))
+      m.use(webpack(options.webpack.prod, true))
     } else {
-      m.use(webpack(options.webpack.dev))
+      m.use(webpack(options.webpack.dev, true))
     }
   }
 

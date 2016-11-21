@@ -3674,6 +3674,14 @@ https-browserify@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.0.tgz#b3ffdfe734b2a3d4a9efd58e8654c91fce86eafd"
 
+"https://github.com/cameronroe/metalsmith-webpack.git":
+  name metalsmith-webpack
+  version "1.0.4"
+  resolved "https://github.com/cameronroe/metalsmith-webpack.git#48c5a07d2054313522117c53062a94c131367b6d"
+  dependencies:
+    enhanced-resolve "^0.7.6"
+    webpack "^1.4.13"
+
 icss-replace-symbols@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/icss-replace-symbols/-/icss-replace-symbols-1.0.2.tgz#cb0b6054eb3af6edc9ab1d62d01933e2d4c8bfa5"
@@ -5178,13 +5186,6 @@ metalsmith-tags@2.0.0:
   resolved "https://registry.yarnpkg.com/metalsmith-tags/-/metalsmith-tags-2.0.0.tgz#81a09877a703664c4155944dd946b7b8bfab0cfd"
   dependencies:
     slug "^0.9.1"
-
-metalsmith-webpack@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/metalsmith-webpack/-/metalsmith-webpack-1.0.3.tgz#038c66839b6f6e643ff4738d4cc5f3baeeff3752"
-  dependencies:
-    enhanced-resolve "^0.7.6"
-    webpack "^1.4.13"
 
 metalsmith@2.2.0:
   version "2.2.0"
