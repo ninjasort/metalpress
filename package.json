@@ -40,7 +40,7 @@
     "check-coverage": "nyc check-coverage --lines 95 --functions 95 --branches 95",
     "report-coverage": "nyc report --reporter=text-lcov > coverage/coverage.lcov && codecov -t 759de1b3-35e5-4742-a96e-3d6d37d6f4bd",
     "build": "babel src -d lib",
-    "prepublish": "npm run build",
+    "prepublish": "npm run build && npm test",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "dependencies": {
