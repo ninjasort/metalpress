@@ -4,10 +4,18 @@ import fs from 'fs'
 import path from 'path'
 import rimraf from 'rimraf'
 import metalpress from '../src'
-import prodConfig from './fixtures/production/config'
 import equal from 'assert-dir-equal'
 import assign from 'deep-assign'
 import pmock from 'pmock'
+
+let configPath, prodConfig, cwd
+
+test.cb.before(t => {
+  configPath = path.resolve(__dirname, './fixtures/production/.metalpress')
+  prodConfig = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}))
+  cwd = pmock.cwd(path.resolve(__dirname, './fixtures/production'))
+  t.end()
+})
 
 test.cb('should build sitemap.xml file', t => {
   const m = metalpress(prodConfig, (err, files) => {
